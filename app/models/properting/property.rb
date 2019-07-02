@@ -193,6 +193,8 @@ module Properting
             if property['updated_at'].present? && last_updated < property['updated_at']
               last_updated = property['updated_at']
             end
+            rent_price = property_data.last_rent_charge.to_f
+            rent_square = property_data.obj_characteristic.to_f
 
             property['layer'] = {}
             property['layer']['town_id'] = layer['town_id'].to_s
@@ -201,8 +203,9 @@ module Properting
             property['layer']['properting_category_id'] = layer['properting_category_id'].to_s
             property['properting_category_id'] = layer['properting_category_id'].to_s
             property['layer']['property_title'] = property_data.renter_name.to_s if property_data.renter_name.present?
-            property['layer']['property_square'] = property_data.obj_characteristic.to_s if property_data.obj_characteristic.present?
-            property['layer']['property_prise'] = property_data.last_rent_charge.to_s if property_data.last_rent_charge.present?
+            property['layer']['property_square'] = rent_square
+            property['layer']['property_price'] = rent_price
+            property['layer']['per_meter'] = rent_price / rent_square rescue 0
 
             property_json = Properting::GeojsonBuilder.build_property(property)
             geo_jsons << property_json if property_json

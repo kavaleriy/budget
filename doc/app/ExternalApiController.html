@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class ExternalApiController - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="ApplicationController.html">ApplicationController</a>
+  
+</div>
+
+    <div id="includes-section" class="nav-section">
+  <h3>Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><a class="include" href="Documentation/DocumentsHelper.html">Documentation::DocumentsHelper</a>
+  
+  
+  
+    <li><a class="include" href="Inspections.html">Inspections</a>
+  
+  
+  </ul>
+</div>
+
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-e_data">#e_data</a>
+    
+    <li ><a href="#method-i-edr">#edr</a>
+    
+    <li ><a href="#method-i-inspections">#inspections</a>
+    
+    <li ><a href="#method-i-judicial_register">#judicial_register</a>
+    
+    <li ><a href="#method-i-no_data_yet">#no_data_yet</a>
+    
+    <li ><a href="#method-i-prozzoro">#prozzoro</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-ExternalApiController">
+  <h1 id="class-ExternalApiController" class="class">
+    class ExternalApiController
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-e_data" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">e_data</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="e_data-source">
+            <pre><span class="ruby-comment"># File app/controllers/external_api_controller.rb, line 30</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">e_data</span>
+  <span class="ruby-identifier">e_data_payments</span> =
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@repairing_repairs</span>.<span class="ruby-identifier">edrpou_spending_units</span>.<span class="ruby-identifier">blank?</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@repairing_repairs</span>.<span class="ruby-identifier">edrpou_artist</span>.<span class="ruby-identifier">blank?</span>
+      <span class="ruby-string">&#39;&#39;</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-comment"># return array data, empty array or hash with errors</span>
+      <span class="ruby-constant">ExternalApi</span>.<span class="ruby-identifier">e_data_payments</span>(<span class="ruby-ivar">@repairing_repairs</span>.<span class="ruby-identifier">edrpou_spending_units</span>, <span class="ruby-ivar">@repairing_repairs</span>.<span class="ruby-identifier">edrpou_artist</span>)
+    <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">e_data_payments</span>.<span class="ruby-identifier">blank?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">e_data_payments</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
+      <span class="ruby-comment"># if e_data_payments empty or hash with errors</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span>{ <span class="ruby-identifier">render</span> <span class="ruby-identifier">partial</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;no_data_yet&#39;</span> }
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> {
+        <span class="ruby-identifier">render</span> <span class="ruby-identifier">file</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;external_api/api_info&#39;</span>,
+               <span class="ruby-identifier">locals</span><span class="ruby-operator">:</span> {
+                   <span class="ruby-identifier">selector</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;#e-data&#39;</span>,
+                   <span class="ruby-identifier">partial_name</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;no_data_yet&#39;</span>
+               }
+      }
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-ivar">@payments</span> = <span class="ruby-constant">Kaminari</span>.<span class="ruby-identifier">paginate_array</span>(<span class="ruby-identifier">e_data_payments</span>).<span class="ruby-identifier">page</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:page</span>]).<span class="ruby-identifier">per</span>(<span class="ruby-value">10</span>)
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">partial</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;modules/classifier/search_e_data&#39;</span>,<span class="ruby-identifier">layout</span><span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>}
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> {
+        <span class="ruby-identifier">render</span> <span class="ruby-identifier">file</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;external_api/e_data&#39;</span>,
+               <span class="ruby-identifier">locals</span><span class="ruby-operator">:</span> {
+                   <span class="ruby-identifier">selector</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;#e-data&#39;</span>,
+                   <span class="ruby-identifier">partial_name</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;modules/classifier/search_e_data&#39;</span>
+               }
+      }
+    <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-edr" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">edr</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="edr-source">
+            <pre><span class="ruby-comment"># File app/controllers/external_api_controller.rb, line 65</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">edr</span>
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">selector</span> = <span class="ruby-string">&#39;#edr&#39;</span>
+    <span class="ruby-identifier">edrpou</span> = <span class="ruby-ivar">@repairing_repairs</span>.<span class="ruby-identifier">edrpou_artist</span>
+
+    <span class="ruby-ivar">@edr_data_bot</span> = <span class="ruby-constant">ExternalApi</span>.<span class="ruby-identifier">data_bot_edr</span>(<span class="ruby-identifier">edrpou</span>).<span class="ruby-identifier">first</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">edrpou</span>.<span class="ruby-identifier">present?</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@edr_data_bot</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@edr_data_bot</span>.<span class="ruby-identifier">try</span>(<span class="ruby-value">:key?</span>, <span class="ruby-string">&#39;full_name&#39;</span>)
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> {
+        <span class="ruby-identifier">render</span> <span class="ruby-identifier">file</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;external_api/api_info&#39;</span>,
+               <span class="ruby-identifier">locals</span><span class="ruby-operator">:</span> {
+                 <span class="ruby-identifier">selector</span><span class="ruby-operator">:</span> <span class="ruby-identifier">selector</span>,
+                 <span class="ruby-identifier">partial_name</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;external_api/edr_info&#39;</span>
+               }
+      }
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">lack_data</span>(<span class="ruby-identifier">format</span>, <span class="ruby-identifier">selector</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-inspections" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">inspections</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="inspections-source">
+            <pre><span class="ruby-comment"># File app/controllers/external_api_controller.rb, line 108</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">inspections</span>
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">selector</span> = <span class="ruby-string">&#39;#inspections&#39;</span>
+    <span class="ruby-identifier">lack_data</span>(<span class="ruby-identifier">format</span>, <span class="ruby-identifier">selector</span>) <span class="ruby-keyword">if</span> <span class="ruby-ivar">@repairing_repairs</span>.<span class="ruby-identifier">edrpou_artist</span>.<span class="ruby-identifier">blank?</span>
+
+    <span class="ruby-identifier">company_data</span> = <span class="ruby-constant">ExternalApi</span>.<span class="ruby-identifier">inspections</span>(<span class="ruby-ivar">@repairing_repairs</span>.<span class="ruby-identifier">edrpou_artist</span>)
+    <span class="ruby-comment"># company_data = ExternalApi.inspections(&#39;22189570&#39;) # test PrivatBank</span>
+    <span class="ruby-keyword">unless</span> <span class="ruby-identifier">company_data</span>[<span class="ruby-string">&#39;items&#39;</span>].<span class="ruby-identifier">blank?</span>
+      <span class="ruby-identifier">inspections_list</span> = <span class="ruby-identifier">build_inspections_arr</span>(<span class="ruby-identifier">company_data</span>[<span class="ruby-string">&#39;items&#39;</span>])
+
+      <span class="ruby-ivar">@inspections</span> = <span class="ruby-constant">Kaminari</span>.<span class="ruby-identifier">paginate_array</span>(<span class="ruby-identifier">inspections_list</span>).<span class="ruby-identifier">page</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:page</span>]).<span class="ruby-identifier">per</span>(<span class="ruby-value">10</span>)
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">partial</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;external_api/inspections/inspections_table&#39;</span>, <span class="ruby-identifier">layout</span><span class="ruby-operator">:</span> <span class="ruby-keyword">false</span> }
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> <span class="ruby-keyword">do</span>
+        <span class="ruby-identifier">render</span> <span class="ruby-identifier">file</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;external_api/inspections/inspections&#39;</span>,
+               <span class="ruby-identifier">locals</span><span class="ruby-operator">:</span> {
+                 <span class="ruby-identifier">selector</span><span class="ruby-operator">:</span> <span class="ruby-identifier">selector</span>,
+                 <span class="ruby-identifier">partial_name</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;external_api/inspections/inspections_table&#39;</span>
+               }
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">message</span> = <span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;external_api.inspections.no_data_message&#39;</span>)
+      <span class="ruby-identifier">lack_data</span>(<span class="ruby-identifier">format</span>, <span class="ruby-identifier">selector</span>, <span class="ruby-identifier">message</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-judicial_register" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">judicial_register</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="judicial_register-source">
+            <pre><span class="ruby-comment"># File app/controllers/external_api_controller.rb, line 85</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">judicial_register</span>
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">selector</span> = <span class="ruby-string">&#39;#judicial-register&#39;</span>
+    <span class="ruby-identifier">lack_data</span>(<span class="ruby-identifier">format</span>, <span class="ruby-identifier">selector</span>) <span class="ruby-keyword">if</span> <span class="ruby-ivar">@repairing_repairs</span>.<span class="ruby-identifier">edrpou_artist</span>.<span class="ruby-identifier">blank?</span>
+
+    <span class="ruby-identifier">company_data</span> = <span class="ruby-constant">ExternalApi</span>.<span class="ruby-identifier">data_bot_decisions</span>(<span class="ruby-ivar">@repairing_repairs</span>.<span class="ruby-identifier">edrpou_artist</span>)
+    <span class="ruby-keyword">unless</span> <span class="ruby-identifier">company_data</span>[<span class="ruby-string">&#39;items&#39;</span>].<span class="ruby-identifier">blank?</span>
+      <span class="ruby-ivar">@judicial_decisions</span> = <span class="ruby-constant">Kaminari</span>.<span class="ruby-identifier">paginate_array</span>(<span class="ruby-identifier">company_data</span>[<span class="ruby-string">&#39;items&#39;</span>]).<span class="ruby-identifier">page</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:page</span>]).<span class="ruby-identifier">per</span>(<span class="ruby-value">10</span>)
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">partial</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;external_api/judicial_register/judicial_register_table&#39;</span>, <span class="ruby-identifier">layout</span><span class="ruby-operator">:</span> <span class="ruby-keyword">false</span> }
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> <span class="ruby-keyword">do</span>
+        <span class="ruby-identifier">render</span> <span class="ruby-identifier">file</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;external_api/judicial_register/judicial_register&#39;</span>,
+               <span class="ruby-identifier">locals</span><span class="ruby-operator">:</span> {
+                 <span class="ruby-identifier">selector</span><span class="ruby-operator">:</span> <span class="ruby-identifier">selector</span>,
+                 <span class="ruby-identifier">partial_name</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;external_api/judicial_register/judicial_register_table&#39;</span>
+               }
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">message</span> = <span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;external_api.judicial_register.no_data_message&#39;</span>)
+      <span class="ruby-identifier">lack_data</span>(<span class="ruby-identifier">format</span>, <span class="ruby-identifier">selector</span>, <span class="ruby-identifier">message</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-no_data_yet" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">no_data_yet</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="no_data_yet-source">
+            <pre><span class="ruby-comment"># File app/controllers/external_api_controller.rb, line 134</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">no_data_yet</span>
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> <span class="ruby-keyword">do</span>
+      <span class="ruby-identifier">render</span> <span class="ruby-identifier">file</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;external_api/api_info&#39;</span>,
+             <span class="ruby-identifier">locals</span><span class="ruby-operator">:</span> {
+               <span class="ruby-identifier">selector</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:selector</span>],
+               <span class="ruby-identifier">partial_name</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;external_api/no_data_yet&#39;</span>
+             }
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-prozzoro" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">prozzoro</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="prozzoro-source">
+            <pre><span class="ruby-comment"># File app/controllers/external_api_controller.rb, line 9</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">prozzoro</span>
+  <span class="ruby-identifier">prozzoro_id</span> = <span class="ruby-identifier">inner_id</span>(<span class="ruby-ivar">@repairing_repairs</span>.<span class="ruby-identifier">prozzoro_id</span>)
+  <span class="ruby-ivar">@prozzoro_info</span> = <span class="ruby-constant">ExternalApi</span>.<span class="ruby-identifier">prozzoro_data</span>(<span class="ruby-identifier">prozzoro_id</span>)
+
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@prozzoro_info</span>.<span class="ruby-identifier">present?</span>
+    <span class="ruby-ivar">@prozzoro_info</span>[<span class="ruby-string">&#39;docs&#39;</span>] = []
+    <span class="ruby-ivar">@prozzoro_info</span>[<span class="ruby-string">&#39;docs&#39;</span>] = <span class="ruby-ivar">@prozzoro_info</span>[<span class="ruby-string">&#39;documents&#39;</span>] <span class="ruby-keyword">if</span> <span class="ruby-ivar">@prozzoro_info</span>[<span class="ruby-string">&#39;documents&#39;</span>]
+    <span class="ruby-ivar">@prozzoro_info</span>[<span class="ruby-string">&#39;docs&#39;</span>] <span class="ruby-operator">+=</span> <span class="ruby-ivar">@prozzoro_info</span>[<span class="ruby-string">&#39;contracts&#39;</span>].<span class="ruby-identifier">first</span>[<span class="ruby-string">&#39;documents&#39;</span>] <span class="ruby-operator">||</span> [] <span class="ruby-keyword">if</span> <span class="ruby-ivar">@prozzoro_info</span>[<span class="ruby-string">&#39;contracts&#39;</span>].<span class="ruby-identifier">present?</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> {
+      <span class="ruby-identifier">render</span> <span class="ruby-identifier">file</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;external_api/api_info&#39;</span>,
+             <span class="ruby-identifier">locals</span><span class="ruby-operator">:</span> {
+                 <span class="ruby-identifier">selector</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;#prozzoro&#39;</span>,
+                 <span class="ruby-identifier">partial_name</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;external_api/prozzoro_info&#39;</span>
+             }
+    }
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

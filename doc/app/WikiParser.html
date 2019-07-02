@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class WikiParser - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="Object.html">Object</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-get_wiki_town_info">::get_wiki_town_info</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-WikiParser">
+  <h1 id="class-WikiParser" class="class">
+    class WikiParser
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-get_wiki_town_info" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_wiki_town_info</span><span
+            class="method-args">(title)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Work ONLY if <a href="Town.html">Town</a> belongs to area or town TODO:
+create method for get wiki info for village</p>
+          
+          
+
+          
+          <div class="method-source-code" id="get_wiki_town_info-source">
+            <pre><span class="ruby-comment"># File lib/wiki_parser.rb, line 6</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">get_wiki_town_info</span>(<span class="ruby-identifier">title</span>)
+  <span class="ruby-comment"># API wiki page hash key value if page doesn&#39;t exist (-1)</span>
+  <span class="ruby-identifier">wiki_page_empty_result</span> = <span class="ruby-string">&#39;-1&#39;</span>
+
+  <span class="ruby-comment"># Wiki-URL town page</span>
+  <span class="ruby-comment"># data_url = &quot;https://uk.wikipedia.org/w/api.php?action=parse&amp;prop=text&amp;format=json&amp;page=&quot;</span>
+  <span class="ruby-identifier">data_url</span> = <span class="ruby-string">&quot;https://uk.wikipedia.org/w/api.php?format=json&amp;action=query&amp;prop=revisions&amp;rvprop=content&amp;rvsection=0&amp;rvparse&amp;titles=&quot;</span>
+
+  <span class="ruby-comment"># encode String to ASCII and concat URL</span>
+  <span class="ruby-identifier">uri</span> = <span class="ruby-constant">URI</span>(<span class="ruby-identifier">data_url</span> <span class="ruby-operator">+</span> <span class="ruby-constant">URI</span>.<span class="ruby-identifier">encode</span>(<span class="ruby-node">&quot;#{title}&quot;</span>))
+
+  <span class="ruby-comment"># get info from uri</span>
+  <span class="ruby-identifier">response</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>.<span class="ruby-identifier">get</span>(<span class="ruby-identifier">uri</span>)
+  <span class="ruby-comment"># get needed data from hash with template (template for town)</span>
+  <span class="ruby-identifier">result</span> = <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">response</span>)[<span class="ruby-string">&#39;query&#39;</span>][<span class="ruby-string">&#39;pages&#39;</span>]
+
+  <span class="ruby-comment"># data control for existing page in wikipedia</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">result</span>.<span class="ruby-identifier">first</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">eql?</span>(<span class="ruby-identifier">wiki_page_empty_result</span>)
+    <span class="ruby-keyword">false</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">result</span>.<span class="ruby-identifier">first</span>[<span class="ruby-value">1</span>][<span class="ruby-string">&#39;revisions&#39;</span>].<span class="ruby-identifier">first</span>[<span class="ruby-string">&#39;*&#39;</span>].<span class="ruby-identifier">html_safe</span>
+  <span class="ruby-keyword">end</span>
+
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

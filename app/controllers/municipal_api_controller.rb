@@ -29,7 +29,6 @@ class MunicipalApiController < ApplicationController
   end
 
   def e_data
-    # binding.pry
     e_data_payments =
       if @municipal.edrpou.blank?
         ''

@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class Town - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="Object.html">Object</a>
+  
+</div>
+
+    <div id="includes-section" class="nav-section">
+  <h3>Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><span class="include">Mongoid::Document</span>
+  
+  
+  
+    <li><span class="include">Mongoid::Timestamps</span>
+  
+  
+  </ul>
+</div>
+
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-areas">::areas</a>
+    
+    <li ><a href="#method-c-cities">::cities</a>
+    
+    <li ><a href="#method-c-get_area_title">::get_area_title</a>
+    
+    <li ><a href="#method-c-get_central_authority_towns">::get_central_authority_towns</a>
+    
+    <li ><a href="#method-c-get_levels_array">::get_levels_array</a>
+    
+    <li ><a href="#method-c-get_user_town">::get_user_town</a>
+    
+    <li ><a href="#method-c-has_parents">::has_parents</a>
+    
+    <li ><a href="#method-c-region_towns">::region_towns</a>
+    
+    <li ><a href="#method-c-regions">::regions</a>
+    
+    <li ><a href="#method-c-to_tree">::to_tree</a>
+    
+    <li ><a href="#method-c-towns">::towns</a>
+    
+    <li ><a href="#method-i-clear_cache">#clear_cache</a>
+    
+    <li ><a href="#method-i-get_beautiful_description">#get_beautiful_description</a>
+    
+    <li ><a href="#method-i-get_key_indicators">#get_key_indicators</a>
+    
+    <li ><a href="#method-i-get_level">#get_level</a>
+    
+    <li ><a href="#method-i-is_test-3F">#is_test?</a>
+    
+    <li ><a href="#method-i-present_emails">#present_emails</a>
+    
+    <li ><a href="#method-i-to_s">#to_s</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-Town">
+  <h1 id="class-Town" class="class">
+    class Town
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
+      <dl>
+      
+        <dt id="AREA_LEVEL">AREA_LEVEL
+        
+        <dd>
+        
+      
+        <dt id="CITY_LEVEL">CITY_LEVEL
+        
+        <dd>
+        
+      
+        <dt id="REGION_LEVEL">REGION_LEVEL
+        
+        <dd>
+        
+      
+        <dt id="TEST_TOWN_KOATUU">TEST_TOWN_KOATUU
+        
+        <dd>
+        
+      
+        <dt id="TOWN_LEVEL">TOWN_LEVEL
+        
+        <dd>
+        
+      
+        <dt id="VILLAGE_LEVEL">VILLAGE_LEVEL
+        
+        <dd>
+        
+      
+        <dt id="WITHOUT_LEVEL">WITHOUT_LEVEL
+        
+        <dd>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-areas" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">areas</span><span
+            class="method-args">(koatuu = '')</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="areas-source">
+            <pre><span class="ruby-comment"># File app/models/town.rb, line 208</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">areas</span>(<span class="ruby-identifier">koatuu</span> = <span class="ruby-string">&#39;&#39;</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:level</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>).<span class="ruby-identifier">where</span>(<span class="ruby-value">:koatuu</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">new</span>(<span class="ruby-node">&quot;^#{koatuu}.*&quot;</span>))
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-cities" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">cities</span><span
+            class="method-args">(koatuu = '')</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="cities-source">
+            <pre><span class="ruby-comment"># File app/models/town.rb, line 214</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">cities</span>(<span class="ruby-identifier">koatuu</span> = <span class="ruby-string">&#39;&#39;</span>)
+  <span class="ruby-identifier">koatuu_code</span> = <span class="ruby-identifier">koatuu</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">koatuu</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;32&#39;</span>
+    <span class="ruby-identifier">koatuu_code</span> = <span class="ruby-string">&#39;80&#39;</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:level</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">13</span>).<span class="ruby-identifier">where</span>(<span class="ruby-value">:koatuu</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">new</span>(<span class="ruby-node">&quot;^#{koatuu_code}.*&quot;</span>))
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-get_area_title" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_area_title</span><span
+            class="method-args">(koatuu)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>not used def self.town_exists?(title)</p>
+
+<pre class="ruby"><span class="ruby-comment"># this function check if exist town by title</span>
+<span class="ruby-comment"># return true if exists else return false</span>
+<span class="ruby-identifier">town</span> = <span class="ruby-constant">Town</span>.<span class="ruby-identifier">get_town_by_title</span>(<span class="ruby-identifier">title</span>).<span class="ruby-identifier">first</span>
+<span class="ruby-operator">!</span><span class="ruby-identifier">town</span>.<span class="ruby-identifier">nil?</span>
+</pre>
+
+<p>end</p>
+          
+          
+
+          
+          <div class="method-source-code" id="get_area_title-source">
+            <pre><span class="ruby-comment"># File app/models/town.rb, line 108</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">get_area_title</span>(<span class="ruby-identifier">koatuu</span>)
+  <span class="ruby-comment"># this function return region title</span>
+  <span class="ruby-comment"># get one parameters koatuu</span>
+  <span class="ruby-comment"># find town with level REGION_LEVEL and first two koatuu symbol</span>
+  <span class="ruby-comment"># if town exist get his title</span>
+  <span class="ruby-comment"># by default return empty string</span>
+  <span class="ruby-identifier">area_title</span> = <span class="ruby-string">&#39;&#39;</span>
+  <span class="ruby-identifier">town</span> = <span class="ruby-constant">Town</span>.<span class="ruby-identifier">areas</span>(<span class="ruby-identifier">koatuu</span>[<span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-value">2</span>]).<span class="ruby-identifier">first</span>
+  <span class="ruby-identifier">area_title</span> = <span class="ruby-identifier">town</span>.<span class="ruby-identifier">title</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">town</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-identifier">area_title</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-get_central_authority_towns" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_central_authority_towns</span><span
+            class="method-args">(query)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_central_authority_towns-source">
+            <pre><span class="ruby-comment"># File app/models/town.rb, line 83</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">get_central_authority_towns</span>(<span class="ruby-identifier">query</span>)
+  <span class="ruby-comment"># first of all get users with authority roles mask</span>
+  <span class="ruby-identifier">city_authority_users</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:roles_mask</span>.<span class="ruby-identifier">in</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-constant">User</span>.<span class="ruby-identifier">mask_for</span>(<span class="ruby-value">:city_authority</span>),
+                                                       <span class="ruby-constant">User</span>.<span class="ruby-identifier">mask_for</span>(<span class="ruby-value">:central_authority</span>),
+                                                       <span class="ruby-constant">User</span>.<span class="ruby-identifier">mask_for</span>(<span class="ruby-value">:municipal_enterprise</span>),
+                                                       <span class="ruby-constant">User</span>.<span class="ruby-identifier">mask_for</span>(<span class="ruby-value">:state_enterprise</span>)]).<span class="ruby-identifier">pluck</span>(<span class="ruby-value">:town_model_id</span>)
+
+  <span class="ruby-comment"># second we find all they towns and last add regular expression to all they towns</span>
+  <span class="ruby-constant">Town</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:_id</span>.<span class="ruby-identifier">in</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">city_authority_users</span>).<span class="ruby-identifier">and</span>(<span class="ruby-identifier">title</span><span class="ruby-operator">:</span> <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">new</span>(<span class="ruby-node">&quot;^#{query}.*&quot;</span>))
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-get_levels_array" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_levels_array</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>not used def self.create_parent_area(title,koatuu)</p>
+
+<pre class="ruby"><span class="ruby-comment"># this function create new town with level = AREA_LEVEL</span>
+<span class="ruby-comment"># get two params title is he title, koatuu is child koatuu</span>
+<span class="ruby-comment"># koatuu area is first 5 number params koatuu</span>
+<span class="ruby-comment"># skip validation because sometime town with AREA_LEVEL can have same koatuu like child town with TOWN_LEVEL</span>
+<span class="ruby-identifier">town</span> = <span class="ruby-constant">Town</span>.<span class="ruby-identifier">new</span>
+<span class="ruby-identifier">town</span>.<span class="ruby-identifier">title</span> = <span class="ruby-identifier">title</span>
+<span class="ruby-identifier">town</span>.<span class="ruby-identifier">koatuu</span> = <span class="ruby-node">&quot;#{koatuu[0...5]}00000&quot;</span>
+<span class="ruby-identifier">area_title</span> = <span class="ruby-constant">Town</span>.<span class="ruby-identifier">get_area_title</span>(<span class="ruby-identifier">koatuu</span>)
+<span class="ruby-identifier">town</span>.<span class="ruby-identifier">level</span> = <span class="ruby-constant">AREA_LEVEL</span>
+<span class="ruby-identifier">town</span>.<span class="ruby-identifier">area_title</span> = <span class="ruby-identifier">area_title</span>
+<span class="ruby-identifier">town</span>.<span class="ruby-identifier">save</span>(<span class="ruby-identifier">validate</span><span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>)
+</pre>
+
+<p>end</p>
+          
+          
+
+          
+          <div class="method-source-code" id="get_levels_array-source">
+            <pre><span class="ruby-comment"># File app/models/town.rb, line 136</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">get_levels_array</span>
+  <span class="ruby-comment"># this function return levels array</span>
+  <span class="ruby-comment"># first of all function get all *_LEVEL consts name</span>
+  <span class="ruby-comment"># get value by this consts</span>
+  <span class="ruby-comment"># then  build hash</span>
+  <span class="ruby-comment"># where *_LEVEL const is key and value is human readable string</span>
+  <span class="ruby-identifier">const_names</span> = <span class="ruby-constant">Town</span>.<span class="ruby-identifier">constants</span>(<span class="ruby-keyword">false</span>)
+
+  <span class="ruby-identifier">consts</span> = []
+  <span class="ruby-identifier">const_names</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">name</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">consts</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-constant">Town</span>.<span class="ruby-identifier">const_get</span>(<span class="ruby-identifier">name</span>),<span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span>)]
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">consts</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-get_user_town" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_user_town</span><span
+            class="method-args">(user)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_user_town-source">
+            <pre><span class="ruby-comment"># File app/models/town.rb, line 246</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">get_user_town</span>(<span class="ruby-identifier">user</span>)
+  <span class="ruby-identifier">user</span>.<span class="ruby-identifier">town_model</span>
+  <span class="ruby-comment"># this function return town from user if user not nil</span>
+  <span class="ruby-comment"># function get one parameters user model</span>
+  <span class="ruby-comment"># init user_town as new Town</span>
+  <span class="ruby-comment"># if user have town, find this town</span>
+  <span class="ruby-comment"># if user town name have area_title</span>
+  <span class="ruby-comment"># add area_title to search</span>
+  <span class="ruby-comment"># and assigned to user_town</span>
+  <span class="ruby-comment"># return user_town(town model)</span>
+  <span class="ruby-comment"># unless user.nil?</span>
+  <span class="ruby-comment">#   unless user.town.empty?</span>
+  <span class="ruby-comment">#     user_town = Town.new</span>
+  <span class="ruby-comment">#     town_arr = user.town.split(&#39;,&#39;) unless user.nil?</span>
+  <span class="ruby-comment">#</span>
+  <span class="ruby-comment">#     town_title = town_arr.first</span>
+  <span class="ruby-comment">#     town_title.strip!</span>
+  <span class="ruby-comment">#</span>
+  <span class="ruby-comment">#     unless town_title.empty?</span>
+  <span class="ruby-comment">#       user_town = Town.get_town_by_title(town_title)</span>
+  <span class="ruby-comment">#</span>
+  <span class="ruby-comment">#       if town_arr.size &gt; 1</span>
+  <span class="ruby-comment">#         town_area_title = town_arr.last</span>
+  <span class="ruby-comment">#         town_area_title.strip!</span>
+  <span class="ruby-comment">#         user_town = user_town.get_town_by_area_title(town_area_title)</span>
+  <span class="ruby-comment">#       end</span>
+  <span class="ruby-comment">#     end</span>
+  <span class="ruby-comment">#     user_town.first</span>
+  <span class="ruby-comment">#   end</span>
+  <span class="ruby-comment"># end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-has_parents" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">has_parents</span><span
+            class="method-args">(level,koatuu)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="has_parents-source">
+            <pre><span class="ruby-comment"># File app/models/town.rb, line 151</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">has_parents</span>(<span class="ruby-identifier">level</span>,<span class="ruby-identifier">koatuu</span>)
+  <span class="ruby-comment"># this function return parent town or area</span>
+  <span class="ruby-comment"># get two params level is child level,koatuu is child koatuu</span>
+  <span class="ruby-comment"># if level = TOWN_LEVEL then we should search in regions level</span>
+  <span class="ruby-comment"># if level = VILLAGE_LEVEL then we should search in towns level</span>
+
+  <span class="ruby-identifier">parent</span> = <span class="ruby-constant">Town</span>
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">level</span>.<span class="ruby-identifier">to_i</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">TOWN_LEVEL</span> <span class="ruby-keyword">then</span> <span class="ruby-identifier">parent</span> = <span class="ruby-constant">Town</span>.<span class="ruby-identifier">regions</span>(<span class="ruby-identifier">koatuu</span>.<span class="ruby-identifier">slice</span>(<span class="ruby-value">0</span>,<span class="ruby-value">5</span>)).<span class="ruby-identifier">first</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">VILLAGE_LEVEL</span> <span class="ruby-keyword">then</span> <span class="ruby-identifier">parent</span> = <span class="ruby-constant">Town</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:level</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">TOWN_LEVEL</span>).<span class="ruby-identifier">where</span>(<span class="ruby-value">:koatuu</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">new</span>(<span class="ruby-node">&quot;^#{koatuu}.*&quot;</span>)).<span class="ruby-identifier">first</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">parent</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-region_towns" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">region_towns</span><span
+            class="method-args">(region_id)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="region_towns-source">
+            <pre><span class="ruby-comment"># File app/models/town.rb, line 224</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">region_towns</span>(<span class="ruby-identifier">region_id</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">level</span><span class="ruby-operator">:</span> <span class="ruby-value">3</span>, <span class="ruby-identifier">p_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">region_id</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-regions" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">regions</span><span
+            class="method-args">(koatuu = '')</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="regions-source">
+            <pre><span class="ruby-comment"># File app/models/town.rb, line 211</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">regions</span>(<span class="ruby-identifier">koatuu</span> = <span class="ruby-string">&#39;&#39;</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:level</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">2</span>).<span class="ruby-identifier">where</span>(<span class="ruby-value">:koatuu</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">new</span>(<span class="ruby-node">&quot;^#{koatuu}.*&quot;</span>))
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-to_tree" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">to_tree</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="to_tree-source">
+            <pre><span class="ruby-comment"># File app/models/town.rb, line 183</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">to_tree</span>
+  <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">cache</span>.<span class="ruby-identifier">fetch</span>( <span class="ruby-constant">Town</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value">:expires_in</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">env</span>.<span class="ruby-identifier">development?</span> <span class="ruby-operator">?</span> <span class="ruby-value">10</span>.<span class="ruby-identifier">seconds</span> <span class="ruby-operator">:</span> <span class="ruby-value">2</span>.<span class="ruby-identifier">hours</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-identifier">tree</span> = []
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">areas</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">area</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">area_code</span> = <span class="ruby-identifier">area</span>.<span class="ruby-identifier">koatuu</span>.<span class="ruby-identifier">slice</span>(<span class="ruby-value">0</span>, <span class="ruby-value">2</span>)
+      <span class="ruby-identifier">row_area</span> = <span class="ruby-identifier">get_node</span>(<span class="ruby-identifier">area</span>)
+
+      <span class="ruby-identifier">row_area</span>[<span class="ruby-value">:city</span>] = <span class="ruby-identifier">get_node</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">cities</span>(<span class="ruby-identifier">area_code</span>).<span class="ruby-identifier">first</span>)
+      <span class="ruby-identifier">row_area</span>[<span class="ruby-value">:indicator_files</span>] = []
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">towns</span>(<span class="ruby-identifier">area_code</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">city</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">city_code</span> = <span class="ruby-identifier">city</span>.<span class="ruby-identifier">koatuu</span>
+        <span class="ruby-identifier">row_area</span>[<span class="ruby-value">:indicator_files</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">get_node</span>(<span class="ruby-identifier">city</span>)
+      <span class="ruby-keyword">end</span>
+
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">regions</span>(<span class="ruby-identifier">area_code</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">city</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">city_code</span> = <span class="ruby-identifier">city</span>.<span class="ruby-identifier">koatuu</span>
+        <span class="ruby-identifier">row_area</span>[<span class="ruby-value">:indicator_files</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">get_node</span>(<span class="ruby-identifier">city</span>)
+      <span class="ruby-keyword">end</span>
+
+      <span class="ruby-identifier">tree</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">row_area</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">tree</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-towns" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">towns</span><span
+            class="method-args">(koatuu = '')</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="towns-source">
+            <pre><span class="ruby-comment"># File app/models/town.rb, line 221</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">towns</span>(<span class="ruby-identifier">koatuu</span> = <span class="ruby-string">&#39;&#39;</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:level</span>.<span class="ruby-identifier">in</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value">3</span>, <span class="ruby-value">31</span>]).<span class="ruby-identifier">where</span>(<span class="ruby-value">:koatuu</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">new</span>(<span class="ruby-node">&quot;^#{koatuu}.*&quot;</span>))
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-clear_cache" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">clear_cache</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="clear_cache-source">
+            <pre><span class="ruby-comment"># File app/models/town.rb, line 171</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">clear_cache</span>
+  <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">cache</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-constant">Town</span>.<span class="ruby-identifier">name</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_beautiful_description" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_beautiful_description</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_beautiful_description-source">
+            <pre><span class="ruby-comment"># File app/models/town.rb, line 67</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_beautiful_description</span>
+  <span class="ruby-comment"># this function get town description</span>
+  <span class="ruby-comment"># from wikipedia.org</span>
+  <span class="ruby-comment"># use lib/wiki_parser</span>
+  <span class="ruby-comment"># ===================</span>
+  <span class="ruby-comment">## return description</span>
+  <span class="ruby-comment">## if data exist in wikipedia.org</span>
+  <span class="ruby-comment">## return data from WikiParser</span>
+  <span class="ruby-comment">## or</span>
+  <span class="ruby-comment">## return field &#39;description&#39; from class Town</span>
+  <span class="ruby-comment"># ===================</span>
+  <span class="ruby-comment"># Work ONLY if Town belongs to area or town</span>
+  <span class="ruby-comment"># TODO: check Town belongs to village</span>
+  <span class="ruby-constant">WikiParser</span>.<span class="ruby-identifier">get_wiki_town_info</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">title</span>) <span class="ruby-operator">||</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">description</span> <span class="ruby-operator">||</span> <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;no_town_description_info&#39;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_key_indicators" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_key_indicators</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>key indicators for key_indicate_map</p>
+          
+          
+
+          
+          <div class="method-source-code" id="get_key_indicators-source">
+            <pre><span class="ruby-comment"># File app/models/town.rb, line 229</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_key_indicators</span>
+  <span class="ruby-identifier">indicators</span> = {}
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">key_indicate_map_indicators</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">indicator</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">indicator</span>.<span class="ruby-identifier">key_indicate_map_indicator_key</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-identifier">year</span> = <span class="ruby-identifier">indicator</span>.<span class="ruby-identifier">key_indicate_map_indicator_file</span>[<span class="ruby-string">&#39;year&#39;</span>].<span class="ruby-identifier">to_s</span>
+    <span class="ruby-identifier">id</span> = <span class="ruby-identifier">indicator</span>.<span class="ruby-identifier">key_indicate_map_indicator_key</span>.<span class="ruby-identifier">_id</span>.<span class="ruby-identifier">to_s</span>
+    <span class="ruby-identifier">indicators</span>[<span class="ruby-identifier">year</span>] = {} <span class="ruby-keyword">if</span> <span class="ruby-identifier">indicators</span>[<span class="ruby-identifier">year</span>].<span class="ruby-identifier">nil?</span>
+    <span class="ruby-identifier">transform</span> = <span class="ruby-identifier">indicator</span>.<span class="ruby-identifier">key_indicate_map_indicator_key</span>[<span class="ruby-string">&#39;integer_or_float&#39;</span>]
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">transform</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;integer&#39;</span>
+      <span class="ruby-identifier">indicators</span>[<span class="ruby-identifier">year</span>][<span class="ruby-identifier">id</span>] = <span class="ruby-identifier">indicator</span>[<span class="ruby-string">&#39;value&#39;</span>].<span class="ruby-identifier">to_i</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">transform</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;float&#39;</span>
+      <span class="ruby-identifier">indicators</span>[<span class="ruby-identifier">year</span>][<span class="ruby-identifier">id</span>] = <span class="ruby-identifier">indicator</span>[<span class="ruby-string">&#39;value&#39;</span>].<span class="ruby-identifier">to_f</span>.<span class="ruby-identifier">round</span>(<span class="ruby-value">2</span>)
+    <span class="ruby-keyword">end</span>
+  }
+  <span class="ruby-identifier">indicators</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_level" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_level</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_level-source">
+            <pre><span class="ruby-comment"># File app/models/town.rb, line 165</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_level</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-value">:area</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">level</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-value">:city</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">level</span> <span class="ruby-operator">==</span> <span class="ruby-value">13</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-value">:town</span> <span class="ruby-keyword">if</span> [<span class="ruby-value">3</span>, <span class="ruby-value">31</span>].<span class="ruby-identifier">include?</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">level</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-is_test-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">is_test?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="is_test-3F-source">
+            <pre><span class="ruby-comment"># File app/models/town.rb, line 94</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">is_test?</span>
+  <span class="ruby-comment"># this function check if town is test</span>
+  <span class="ruby-comment"># test town should have TEST_TOWN_KOATUU</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">koatuu</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-constant">TEST_TOWN_KOATUU</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-present_emails" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">present_emails</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="present_emails-source">
+            <pre><span class="ruby-comment"># File app/models/town.rb, line 278</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">present_emails</span>
+  <span class="ruby-identifier">emails</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:email</span>.<span class="ruby-identifier">nin</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-string">&#39;&#39;</span>, <span class="ruby-keyword">nil</span>])
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-to_s" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">to_s</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="to_s-source">
+            <pre><span class="ruby-comment"># File app/models/town.rb, line 175</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_s</span>
+  <span class="ruby-keyword">if</span> [<span class="ruby-value">1</span>, <span class="ruby-value">13</span>].<span class="ruby-identifier">index</span>(<span class="ruby-identifier">level</span>)
+    <span class="ruby-identifier">title</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-node">&quot;#{title}, #{area_title}&quot;</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

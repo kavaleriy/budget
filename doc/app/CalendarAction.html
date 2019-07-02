@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class CalendarAction - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="Object.html">Object</a>
+  
+</div>
+
+    <div id="includes-section" class="nav-section">
+  <h3>Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><span class="include">Mongoid::Document</span>
+  
+  
+  </ul>
+</div>
+
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-get_uniq_responsible">::get_uniq_responsible</a>
+    
+    <li ><a href="#method-i-color_invert">#color_invert</a>
+    
+    <li ><a href="#method-i-set_color">#set_color</a>
+    
+    <li ><a href="#method-i-set_default_color">#set_default_color</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-CalendarAction">
+  <h1 id="class-CalendarAction" class="class">
+    class CalendarAction
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
+      <dl>
+      
+        <dt id="ACTION_TYPE_ANALYSIS">ACTION_TYPE_ANALYSIS
+        
+        <dd>
+        
+      
+        <dt id="ACTION_TYPE_ANALYSIS_COLOR">ACTION_TYPE_ANALYSIS_COLOR
+        
+        <dd>
+        
+      
+        <dt id="ACTION_TYPE_DISCUSSION">ACTION_TYPE_DISCUSSION
+        
+        <dd>
+        
+      
+        <dt id="ACTION_TYPE_DISCUSSION_COLOR">ACTION_TYPE_DISCUSSION_COLOR
+        
+        <dd>
+        
+      
+        <dt id="ACTION_TYPE_EXECUTION">ACTION_TYPE_EXECUTION
+        
+        <dd>
+        
+      
+        <dt id="ACTION_TYPE_EXECUTION_COLOR">ACTION_TYPE_EXECUTION_COLOR
+        
+        <dd>
+        
+      
+        <dt id="ACTION_TYPE_FOLDING">ACTION_TYPE_FOLDING
+        
+        <dd>
+        
+      
+        <dt id="ACTION_TYPE_FOLDING_COLOR">ACTION_TYPE_FOLDING_COLOR
+        
+        <dd>
+        
+      
+        <dt id="ACTION_TYPE_NO_INDICATED">ACTION_TYPE_NO_INDICATED
+        
+        <dd>
+        
+      
+        <dt id="ACTION_TYPE_NO_INDICATED_COLOR">ACTION_TYPE_NO_INDICATED_COLOR
+        
+        <dd>
+        
+      
+        <dt id="CITY_HOLDER">CITY_HOLDER
+        
+        <dd>
+        
+      
+        <dt id="PEOPLE_ACTION">PEOPLE_ACTION
+        
+        <dd>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-get_uniq_responsible" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_uniq_responsible</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_uniq_responsible-source">
+            <pre><span class="ruby-comment"># File app/models/calendar_action.rb, line 40</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">get_uniq_responsible</span>
+  <span class="ruby-identifier">pluck</span>(<span class="ruby-value">:responsible</span>).<span class="ruby-identifier">uniq</span>.<span class="ruby-identifier">compact</span>.<span class="ruby-identifier">sort</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-color_invert" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">color_invert</span><span
+            class="method-args">(color)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="color_invert-source">
+            <pre><span class="ruby-comment"># File app/models/calendar_action.rb, line 60</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">color_invert</span>(<span class="ruby-identifier">color</span>)
+  <span class="ruby-identifier">color_code</span> = <span class="ruby-identifier">color</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-node">/^#/</span>, <span class="ruby-string">&#39;&#39;</span>)
+  <span class="ruby-string">&#39;#&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">sprintf</span>(<span class="ruby-string">&quot;%X&quot;</span>, <span class="ruby-identifier">color_code</span>.<span class="ruby-identifier">hex</span> <span class="ruby-operator">^</span> <span class="ruby-value">0xFFFFFF</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-set_color" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">set_color</span><span
+            class="method-args">(color)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="set_color-source">
+            <pre><span class="ruby-comment"># File app/models/calendar_action.rb, line 56</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_color</span>(<span class="ruby-identifier">color</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">color</span> = <span class="ruby-identifier">color</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">text_color</span> = <span class="ruby-identifier">color_invert</span>(<span class="ruby-identifier">color</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-set_default_color" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">set_default_color</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="set_default_color-source">
+            <pre><span class="ruby-comment"># File app/models/calendar_action.rb, line 44</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_default_color</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">color</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">color</span>.<span class="ruby-identifier">empty?</span>
+     <span class="ruby-keyword">case</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">action_type</span>
+       <span class="ruby-keyword">when</span> <span class="ruby-constant">ACTION_TYPE_FOLDING</span> <span class="ruby-keyword">then</span> <span class="ruby-identifier">set_color</span>(<span class="ruby-constant">ACTION_TYPE_FOLDING_COLOR</span>)
+       <span class="ruby-keyword">when</span> <span class="ruby-constant">ACTION_TYPE_ANALYSIS</span> <span class="ruby-keyword">then</span> <span class="ruby-identifier">set_color</span>(<span class="ruby-constant">ACTION_TYPE_ANALYSIS_COLOR</span>)
+       <span class="ruby-keyword">when</span> <span class="ruby-constant">ACTION_TYPE_EXECUTION</span> <span class="ruby-keyword">then</span> <span class="ruby-identifier">set_color</span>(<span class="ruby-constant">ACTION_TYPE_EXECUTION_COLOR</span>)
+       <span class="ruby-keyword">when</span> <span class="ruby-constant">ACTION_TYPE_DISCUSSION</span> <span class="ruby-keyword">then</span> <span class="ruby-identifier">set_color</span>(<span class="ruby-constant">ACTION_TYPE_DISCUSSION_COLOR</span>)
+       <span class="ruby-keyword">else</span> <span class="ruby-identifier">raise</span> <span class="ruby-string">&quot;undefined type&quot;</span>
+     <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

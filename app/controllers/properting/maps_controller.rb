@@ -94,6 +94,10 @@ module Properting
       end
     end
 
+    def statistic
+    #   it will be statistic
+    end
+
     # not used in town profile
     # used in show, edit layer
     def getInfoContentForPopup
@@ -106,36 +110,7 @@ module Properting
       render partial: 'info_popup'
     end
 
-    def get_heapmap_geo_json
-      propertings = Properting::Property.where(:coordinates.ne => nil).entries
-      geo_json = []
-      propertings.each do |property|
-        next if property[:coordinates].nil? || property[:coordinates][0].nil? || property[:coordinates][1].nil?
-
-        geo_json << {
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: property[:coordinates]
-          },
-          properties: {
-            id: property[:id],
-            property: 'house',
-            amount: property[:amount]
-          }
-        }
-      end
-      result = {
-        'type' => 'FeatureCollection',
-        'features' => geo_json
-      }
-
-      respond_to do |format|
-        format.json { render json: result }
-      end
-    end
-
-    def heapmap; end
+    # def heapmap; end
 
     private
 

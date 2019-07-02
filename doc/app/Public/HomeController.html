@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class Public::HomeController - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script src="../js/jquery.js"></script>
+<script src="../js/darkfish.js"></script>
+
+<link href="../css/fonts.css" rel="stylesheet">
+<link href="../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="../ApplicationController.html">ApplicationController</a>
+  
+</div>
+
+    <div id="includes-section" class="nav-section">
+  <h3>Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><a class="include" href="../ControllerCaching.html">ControllerCaching</a>
+  
+  
+  </ul>
+</div>
+
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-about">#about</a>
+    
+    <li ><a href="#method-i-get_partners">#get_partners</a>
+    
+    <li ><a href="#method-i-index">#index</a>
+    
+    <li ><a href="#method-i-show_pages">#show_pages</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-Public::HomeController">
+  <h1 id="class-Public::HomeController" class="class">
+    class Public::HomeController
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-about" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">about</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="about-source">
+            <pre><span class="ruby-comment"># File app/controllers/public/home_controller.rb, line 21</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">about</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_partners" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_partners</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_partners-source">
+            <pre><span class="ruby-comment"># File app/controllers/public/home_controller.rb, line 14</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_partners</span>
+  <span class="ruby-identifier">partners</span> = <span class="ruby-constant">Modules</span><span class="ruby-operator">::</span><span class="ruby-constant">PartnersCategory</span>.<span class="ruby-identifier">by_alias_str</span>(<span class="ruby-string">&#39;main&#39;</span>).<span class="ruby-identifier">first</span>
+  <span class="ruby-identifier">partners</span>.<span class="ruby-identifier">blank?</span> <span class="ruby-operator">?</span> [] <span class="ruby-operator">:</span> <span class="ruby-identifier">partners</span>.<span class="ruby-identifier">modules_partners</span>.<span class="ruby-identifier">get_publish_partners</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-index" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">index</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>before_action :set_calendar, only: [:calendar, :subscribe, :unsubscribe]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="index-source">
+            <pre><span class="ruby-comment"># File app/controllers/public/home_controller.rb, line 8</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
+  <span class="ruby-ivar">@sliders</span> = <span class="ruby-constant">Modules</span><span class="ruby-operator">::</span><span class="ruby-constant">Slider</span>.<span class="ruby-identifier">get_slider_by_order</span>
+  <span class="ruby-ivar">@news</span> = <span class="ruby-constant">Modules</span><span class="ruby-operator">::</span><span class="ruby-constant">BudgetNews</span>.<span class="ruby-identifier">published_news</span>.<span class="ruby-identifier">get_last_news</span>(<span class="ruby-value">3</span>)
+  <span class="ruby-ivar">@test_town</span> = <span class="ruby-constant">Town</span>.<span class="ruby-identifier">get_test_town</span>.<span class="ruby-identifier">first</span>
+  <span class="ruby-ivar">@info_pages</span> = <span class="ruby-constant">ContentManager</span><span class="ruby-operator">::</span><span class="ruby-constant">PageContainer</span>.<span class="ruby-identifier">get_info_pages</span>
+
+  <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_partners</span>
+    <span class="ruby-identifier">partners</span> = <span class="ruby-constant">Modules</span><span class="ruby-operator">::</span><span class="ruby-constant">PartnersCategory</span>.<span class="ruby-identifier">by_alias_str</span>(<span class="ruby-string">&#39;main&#39;</span>).<span class="ruby-identifier">first</span>
+    <span class="ruby-identifier">partners</span>.<span class="ruby-identifier">blank?</span> <span class="ruby-operator">?</span> [] <span class="ruby-operator">:</span> <span class="ruby-identifier">partners</span>.<span class="ruby-identifier">modules_partners</span>.<span class="ruby-identifier">get_publish_partners</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-ivar">@partners</span> = <span class="ruby-identifier">get_partners</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-show_pages" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">show_pages</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="show_pages-source">
+            <pre><span class="ruby-comment"># File app/controllers/public/home_controller.rb, line 24</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">show_pages</span>
+  <span class="ruby-ivar">@page</span> = <span class="ruby-constant">ContentManager</span><span class="ruby-operator">::</span><span class="ruby-constant">PageContainer</span>.<span class="ruby-identifier">get_page_by_alias</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:alias</span>]).<span class="ruby-identifier">first</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

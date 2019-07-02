@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class Widgets::CalendarController - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script src="../js/jquery.js"></script>
+<script src="../js/darkfish.js"></script>
+
+<link href="../css/fonts.css" rel="stylesheet">
+<link href="../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="WidgetsController.html">Widgets::WidgetsController</a>
+  
+</div>
+
+    <div id="includes-section" class="nav-section">
+  <h3>Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><a class="include" href="../EventsHelper.html">EventsHelper</a>
+  
+  
+  </ul>
+</div>
+
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-get_parent_event">#get_parent_event</a>
+    
+    <li ><a href="#method-i-pie_cycle">#pie_cycle</a>
+    
+    <li ><a href="#method-i-pie_data">#pie_data</a>
+    
+    <li ><a href="#method-i-show">#show</a>
+    
+    <li ><a href="#method-i-timeline">#timeline</a>
+    
+    <li ><a href="#method-i-timelinejs_data">#timelinejs_data</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-Widgets::CalendarController">
+  <h1 id="class-Widgets::CalendarController" class="class">
+    class Widgets::CalendarController
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-get_parent_event" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_parent_event</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_parent_event-source">
+            <pre><span class="ruby-comment"># File app/controllers/widgets/calendar_controller.rb, line 83</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_parent_event</span>
+  <span class="ruby-identifier">starts_at</span> = <span class="ruby-string">&#39;2015-01-01&#39;</span>.<span class="ruby-identifier">to_date</span>
+  <span class="ruby-identifier">ends_at</span> = <span class="ruby-string">&#39;2016-01-01&#39;</span>.<span class="ruby-identifier">to_date</span>
+  <span class="ruby-identifier">event</span> = <span class="ruby-ivar">@calendar</span>.<span class="ruby-identifier">events</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:event_id</span>])
+  <span class="ruby-identifier">events</span> = <span class="ruby-ivar">@calendar</span>.<span class="ruby-identifier">events</span>.<span class="ruby-identifier">event_timeline</span>(<span class="ruby-identifier">event</span>.<span class="ruby-identifier">holder</span>, <span class="ruby-identifier">starts_at</span>, <span class="ruby-identifier">ends_at</span>)
+  <span class="ruby-identifier">render</span> <span class="ruby-value">:json</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:parent_event</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">events</span>.<span class="ruby-identifier">uniq</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> [<span class="ruby-identifier">e</span>.<span class="ruby-identifier">starts_at</span>, <span class="ruby-identifier">e</span>.<span class="ruby-identifier">ends_at</span><span class="ruby-operator">-</span><span class="ruby-identifier">e</span>.<span class="ruby-identifier">starts_at</span>]}.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">starts_at</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">event</span>.<span class="ruby-identifier">starts_at</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">ends_at</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">event</span>.<span class="ruby-identifier">ends_at</span>}}
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-pie_cycle" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">pie_cycle</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="pie_cycle-source">
+            <pre><span class="ruby-comment"># File app/controllers/widgets/calendar_controller.rb, line 14</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">pie_cycle</span>
+  <span class="ruby-ivar">@curr_town_event</span> = <span class="ruby-ivar">@calendar</span>.<span class="ruby-identifier">events</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">holder</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>, <span class="ruby-value">:starts_at</span>.<span class="ruby-identifier">lte</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Date</span>.<span class="ruby-identifier">current</span>).<span class="ruby-identifier">last</span>
+  <span class="ruby-ivar">@curr_people_event</span> = <span class="ruby-ivar">@calendar</span>.<span class="ruby-identifier">events</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">holder</span><span class="ruby-operator">:</span> <span class="ruby-value">2</span>, <span class="ruby-value">:starts_at</span>.<span class="ruby-identifier">lte</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Date</span>.<span class="ruby-identifier">current</span>).<span class="ruby-identifier">last</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-pie_data" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">pie_data</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="pie_data-source">
+            <pre><span class="ruby-comment"># File app/controllers/widgets/calendar_controller.rb, line 22</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">pie_data</span>
+  <span class="ruby-identifier">last_event_date</span> = <span class="ruby-identifier">get_last_event_date</span> <span class="ruby-operator">||</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
+  <span class="ruby-comment"># last_event_date = @calendar.events.desc(:ends_at).limit(1).first.ends_at</span>
+  <span class="ruby-comment"># @calendar.events.desc(:ends_at).limit(1).first.ends_at.strftime(&quot;%Y-1-1&quot;)</span>
+
+  <span class="ruby-identifier">starts_at</span> = <span class="ruby-constant">Date</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">last_event_date</span>.<span class="ruby-identifier">year</span>,<span class="ruby-value">01</span>,<span class="ruby-value">01</span>)
+  <span class="ruby-identifier">ends_at</span> = <span class="ruby-constant">Date</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">last_event_date</span>.<span class="ruby-identifier">year</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>,<span class="ruby-value">01</span>,<span class="ruby-value">01</span>)
+  <span class="ruby-comment"># starts_at_old = &#39;2016-01-01&#39;.to_date #Event.asc(:starts_at).limit(1).first.starts_at.to_date</span>
+  <span class="ruby-comment"># ends_at_old = &#39;2017-01-01&#39;.to_date #Event.desc(:ends_at).limit(1).first.ends_at.to_date</span>
+  <span class="ruby-identifier">events</span> = { <span class="ruby-identifier">e1</span><span class="ruby-operator">:</span> [], <span class="ruby-identifier">e2</span><span class="ruby-operator">:</span> [] }
+
+  <span class="ruby-identifier">events</span>[<span class="ruby-value">:e1</span>] = <span class="ruby-identifier">build_pie</span> <span class="ruby-identifier">starts_at</span>, <span class="ruby-identifier">ends_at</span>, <span class="ruby-ivar">@calendar</span>.<span class="ruby-identifier">events</span>.<span class="ruby-identifier">event_timeline</span>(<span class="ruby-value">1</span>, <span class="ruby-identifier">starts_at</span>, <span class="ruby-identifier">ends_at</span>)
+  <span class="ruby-identifier">events</span>[<span class="ruby-value">:e2</span>] = <span class="ruby-identifier">build_pie</span> <span class="ruby-identifier">starts_at</span>, <span class="ruby-identifier">ends_at</span>, <span class="ruby-ivar">@calendar</span>.<span class="ruby-identifier">events</span>.<span class="ruby-identifier">event_timeline</span>(<span class="ruby-value">2</span>, <span class="ruby-identifier">starts_at</span>, <span class="ruby-identifier">ends_at</span>)
+
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> { <span class="ruby-identifier">starts_at</span><span class="ruby-operator">:</span> <span class="ruby-identifier">starts_at</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&#39;%d/%m/%Y&#39;</span>), <span class="ruby-identifier">ends_at</span><span class="ruby-operator">:</span> <span class="ruby-identifier">ends_at</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&#39;%d/%m/%Y&#39;</span>), <span class="ruby-identifier">days</span><span class="ruby-operator">:</span> (<span class="ruby-identifier">ends_at</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">starts_at</span>) <span class="ruby-operator">/</span> <span class="ruby-value">3600</span> <span class="ruby-operator">/</span> <span class="ruby-value">24</span> , <span class="ruby-identifier">events1</span><span class="ruby-operator">:</span> <span class="ruby-identifier">events</span>[<span class="ruby-value">:e1</span>], <span class="ruby-identifier">events2</span><span class="ruby-operator">:</span> <span class="ruby-identifier">events</span>[<span class="ruby-value">:e2</span>] }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-show" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">show</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="show-source">
+            <pre><span class="ruby-comment"># File app/controllers/widgets/calendar_controller.rb, line 6</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
+  <span class="ruby-ivar">@calendar</span> = <span class="ruby-constant">Calendar</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:calendar_id</span>])
+    <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> {<span class="ruby-identifier">render</span> <span class="ruby-string">&#39;widgets/calendar/calendar_box&#39;</span>}
+    <span class="ruby-keyword">end</span>
+
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-timeline" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">timeline</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="timeline-source">
+            <pre><span class="ruby-comment"># File app/controllers/widgets/calendar_controller.rb, line 19</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">timeline</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-timelinejs_data" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">timelinejs_data</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="timelinejs_data-source">
+            <pre><span class="ruby-comment"># File app/controllers/widgets/calendar_controller.rb, line 39</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">timelinejs_data</span>
+  <span class="ruby-identifier">starts_at</span> = <span class="ruby-constant">Date</span>.<span class="ruby-identifier">current</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&#39;%Y,%m,%d&#39;</span>) <span class="ruby-comment">#Event.asc(:starts_at).limit(1).first.starts_at.to_date</span>
+
+  <span class="ruby-identifier">timeline</span> = {
+      <span class="ruby-string">&#39;timeline&#39;</span> =<span class="ruby-operator">&gt;</span> {
+          <span class="ruby-string">&#39;uniqueid&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;#{@calendar.id}&quot;</span>,
+          <span class="ruby-string">&#39;headline&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@calendar</span>.<span class="ruby-identifier">title</span>,
+          <span class="ruby-string">&#39;type&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;default&#39;</span>,
+          <span class="ruby-string">&#39;text&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@calendar</span>.<span class="ruby-identifier">description</span>,
+          <span class="ruby-string">&#39;startDate&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">starts_at</span>,
+          <span class="ruby-string">&#39;asset&#39;</span>=<span class="ruby-operator">&gt;</span>
+              {
+                  <span class="ruby-string">&#39;media&#39;</span>=<span class="ruby-operator">&gt;</span><span class="ruby-string">&#39;http://www.ua.undp.org/content/dam/ukraine/img/povred/20130703sk9M3oCW3tUZg6D8_pzuOo_large.jpeg&#39;</span>,
+                  <span class="ruby-comment"># &#39;credit&#39;=&gt;&#39;credits&#39;,</span>
+                  <span class="ruby-comment"># &#39;caption&#39;=&gt;&#39;caption&#39;</span>
+              },
+          <span class="ruby-string">&#39;date&#39;</span> =<span class="ruby-operator">&gt;</span> []
+      }
+  }
+
+  <span class="ruby-ivar">@calendar</span>.<span class="ruby-identifier">events</span>.<span class="ruby-identifier">all</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">media</span> = <span class="ruby-identifier">e</span>.<span class="ruby-identifier">holder</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span> <span class="ruby-operator">?</span> { <span class="ruby-identifier">img</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;timeline-city.png&#39;</span>, <span class="ruby-identifier">thumb</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;city.png&#39;</span> } <span class="ruby-operator">:</span> { <span class="ruby-identifier">img</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;timeline-people.png&#39;</span>, <span class="ruby-identifier">thumb</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;timeline-people.png&#39;</span>}
+
+  <span class="ruby-identifier">point</span> = {}
+  <span class="ruby-identifier">point</span>[<span class="ruby-string">&#39;startDate&#39;</span>] = <span class="ruby-identifier">e</span>.<span class="ruby-identifier">starts_at</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&#39;%Y,%m,%d&#39;</span>)
+  <span class="ruby-identifier">point</span>[<span class="ruby-string">&#39;endDate&#39;</span>] = <span class="ruby-identifier">e</span>.<span class="ruby-identifier">ends_at</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&#39;%Y,%m,%d&#39;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">ends_at</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-identifier">point</span>[<span class="ruby-string">&#39;headline&#39;</span>] = <span class="ruby-node">&quot;#{e.title}&quot;</span>
+  <span class="ruby-identifier">point</span>[<span class="ruby-string">&#39;uniqueid&#39;</span>] = <span class="ruby-node">&quot;#{e.id}&quot;</span>
+  <span class="ruby-comment"># point[&#39;text&#39;] = e.description</span>
+  <span class="ruby-identifier">point</span>[<span class="ruby-string">&#39;asset&#39;</span>] =
+      {
+          <span class="ruby-string">&#39;media&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;/assets/calendar/#{media[:img]}&quot;</span>,
+          <span class="ruby-string">&#39;thumbnail&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;/assets/calendar/#{media[:thumb]}&quot;</span>,
+          <span class="ruby-comment">#&#39;credit&#39;=&gt;&#39;credit&#39;,</span>
+          <span class="ruby-comment">#&#39;caption&#39;=&gt;&#39;caption&#39;</span>
+      }
+
+  <span class="ruby-identifier">timeline</span>[<span class="ruby-string">&#39;timeline&#39;</span>][<span class="ruby-string">&#39;date&#39;</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">point</span>
+  }
+
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-identifier">timeline</span>
+
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>module ApplicationHelper - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="module">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-check_admin">#check_admin</a>
+    
+    <li ><a href="#method-i-date_dmY">#date_dmY</a>
+    
+    <li ><a href="#method-i-fa_icon_list">#fa_icon_list</a>
+    
+    <li ><a href="#method-i-format_date">#format_date</a>
+    
+    <li ><a href="#method-i-get_bg_colors_list">#get_bg_colors_list</a>
+    
+    <li ><a href="#method-i-get_calendars">#get_calendars</a>
+    
+    <li ><a href="#method-i-get_file_type_icon">#get_file_type_icon</a>
+    
+    <li ><a href="#method-i-get_nav_link">#get_nav_link</a>
+    
+    <li ><a href="#method-i-hexToRgb">#hexToRgb</a>
+    
+    <li ><a href="#method-i-is_current_year">#is_current_year</a>
+    
+    <li ><a href="#method-i-sortable">#sortable</a>
+    
+    <li ><a href="#method-i-text_colors_list">#text_colors_list</a>
+    
+    <li ><a href="#method-i-undp_colors_list">#undp_colors_list</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="module-ApplicationHelper">
+  <h1 id="module-ApplicationHelper" class="module">
+    module ApplicationHelper
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-check_admin" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">check_admin</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="check_admin-source">
+            <pre><span class="ruby-comment"># File app/helpers/application_helper.rb, line 432</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">check_admin</span>
+  <span class="ruby-identifier">current_user</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">admin?</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-date_dmY" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">date_dmY</span><span
+            class="method-args">(date)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="date_dmY-source">
+            <pre><span class="ruby-comment"># File app/helpers/application_helper.rb, line 61</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">date_dmY</span>(<span class="ruby-identifier">date</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">date</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-string">&#39;&#39;</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">date</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&#39;%d-%m-%Y&#39;</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-fa_icon_list" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">fa_icon_list</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="fa_icon_list-source">
+            <pre><span class="ruby-comment"># File app/helpers/application_helper.rb, line 126</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">fa_icon_list</span>
+  [<span class="ruby-keyword">nil</span>] <span class="ruby-operator">+</span> <span class="ruby-node">%w(
+   fa-adjust
+   fa-anchor
+   fa-archive
+   fa-arrows
+   fa-arrows-h
+   fa-arrows-v
+   fa-asterisk
+   fa-automobile
+   fa-ban
+   fa-bank
+   fa-bar-chart-o
+   fa-barcode
+   fa-bars
+   fa-beer
+   fa-bell
+   fa-bell-o
+   fa-bolt
+   fa-bomb
+   fa-book
+   fa-bookmark
+   fa-bookmark-o
+   fa-briefcase
+   fa-bug
+   fa-building
+   fa-building-o
+   fa-bullhorn
+   fa-bullseye
+   fa-cab
+   fa-calendar
+   fa-calendar-o
+   fa-camera
+   fa-camera-retro
+   fa-car
+   fa-caret-square-o-down
+   fa-caret-square-o-left
+   fa-caret-square-o-right
+   fa-caret-square-o-up
+   fa-certificate
+   fa-check
+   fa-check-circle
+   fa-check-circle-o
+   fa-check-square
+   fa-check-square-o
+   fa-child
+   fa-circle
+   fa-circle-o
+   fa-circle-o-notch
+   fa-circle-thin
+   fa-clock-o
+   fa-cloud
+   fa-cloud-download
+   fa-cloud-upload
+   fa-code
+   fa-code-fork
+   fa-coffee
+   fa-cog
+   fa-cogs
+   fa-comment
+   fa-comment-o
+   fa-comments
+   fa-comments-o
+   fa-compass
+   fa-credit-card
+   fa-crop
+   fa-crosshairs
+   fa-cube
+   fa-cubes
+   fa-cutlery
+   fa-dashboard
+   fa-database
+   fa-desktop
+   fa-dot-circle-o
+   fa-download
+   fa-edit
+   fa-ellipsis-h
+   fa-ellipsis-v
+   fa-envelope
+   fa-envelope-o
+   fa-envelope-square
+   fa-eraser
+   fa-exchange
+   fa-exclamation
+   fa-exclamation-circle
+   fa-exclamation-triangle
+   fa-external-link
+   fa-external-link-square
+   fa-eye
+   fa-eye-slash
+   fa-fax
+   fa-female
+   fa-fighter-jet
+   fa-file-archive-o
+   fa-file-audio-o
+   fa-file-code-o
+   fa-file-excel-o
+   fa-file-image-o
+   fa-file-movie-o
+   fa-file-pdf-o
+   fa-file-photo-o
+   fa-file-picture-o
+   fa-file-powerpoint-o
+   fa-file-sound-o
+   fa-file-video-o
+   fa-file-word-o
+   fa-file-zip-o
+   fa-film
+   fa-filter
+   fa-fire
+   fa-fire-extinguisher
+   fa-flag
+   fa-flag-checkered
+   fa-flag-o
+   fa-flash
+   fa-flask
+   fa-folder
+   fa-folder-o
+   fa-folder-open
+   fa-folder-open-o
+   fa-frown-o
+   fa-gamepad
+   fa-gavel
+   fa-gear
+   fa-gears
+   fa-gift
+   fa-glass
+   fa-globe
+   fa-graduation-cap
+   fa-group
+   fa-hdd-o
+   fa-headphones
+   fa-heart
+   fa-heart-o
+   fa-history
+   fa-home
+   fa-image
+   fa-inbox
+   fa-info
+   fa-info-circle
+   fa-institution
+   fa-key
+   fa-keyboard-o
+   fa-language
+   fa-laptop
+   fa-leaf
+   fa-legal
+   fa-lemon-o
+   fa-level-down
+   fa-level-up
+   fa-life-bouy
+   fa-life-ring
+   fa-life-saver
+   fa-lightbulb-o
+   fa-location-arrow
+   fa-lock
+   fa-magic
+   fa-magnet
+   fa-mail-forward
+   fa-mail-reply
+   fa-mail-reply-all
+   fa-male
+   fa-map-marker
+   fa-meh-o
+   fa-microphone
+   fa-microphone-slash
+   fa-minus
+   fa-minus-circle
+   fa-minus-square
+   fa-minus-square-o
+   fa-mobile
+   fa-mobile-phone
+   fa-money
+   fa-moon-o
+   fa-mortar-board
+   fa-music
+   fa-navicon
+   fa-paper-plane
+   fa-paper-plane-o
+   fa-paw
+   fa-pencil
+   fa-pencil-square
+   fa-pencil-square-o
+   fa-phone
+   fa-phone-square
+   fa-photo
+   fa-picture-o
+   fa-plane
+   fa-plus
+   fa-plus-circle
+   fa-plus-square
+   fa-plus-square-o
+   fa-power-off
+   fa-print
+   fa-puzzle-piece
+   fa-qrcode
+   fa-question
+   fa-question-circle
+   fa-quote-left
+   fa-quote-right
+   fa-random
+   fa-recycle
+   fa-refresh
+   fa-reorder
+   fa-reply
+   fa-reply-all
+   fa-retweet
+   fa-road
+   fa-rocket
+   fa-rss
+   fa-rss-square
+   fa-search
+   fa-search-minus
+   fa-search-plus
+   fa-send
+   fa-send-o
+   fa-share
+   fa-share-alt
+   fa-share-alt-square
+   fa-share-square
+   fa-share-square-o
+   fa-shield
+   fa-shopping-cart
+   fa-sign-in
+   fa-sign-out
+   fa-signal
+   fa-sitemap
+   fa-sliders
+   fa-smile-o
+   fa-sort
+   fa-sort-alpha-asc
+   fa-sort-alpha-desc
+   fa-sort-amount-asc
+   fa-sort-amount-desc
+   fa-sort-asc
+   fa-sort-desc
+   fa-sort-down
+   fa-sort-numeric-asc
+   fa-sort-numeric-desc
+   fa-sort-up
+   fa-space-shuttle
+   fa-spinner
+   fa-spoon
+   fa-square
+   fa-square-o
+   fa-star
+   fa-star-half
+   fa-star-half-empty
+   fa-star-half-full
+   fa-star-half-o
+   fa-star-o
+   fa-suitcase
+   fa-sun-o
+   fa-support
+   fa-tablet
+   fa-tachometer
+   fa-tag
+   fa-tags
+   fa-tasks
+   fa-taxi
+   fa-terminal
+   fa-thumb-tack
+   fa-thumbs-down
+   fa-thumbs-o-down
+   fa-thumbs-o-up
+   fa-thumbs-up
+   fa-ticket
+   fa-times
+   fa-times-circle
+   fa-times-circle-o
+   fa-tint
+   fa-toggle-down
+   fa-toggle-left
+   fa-toggle-right
+   fa-toggle-up
+   fa-trash-o
+   fa-tree
+   fa-trophy
+   fa-truck
+   fa-umbrella
+   fa-university
+   fa-unlock
+   fa-unlock-alt
+   fa-unsorted
+   fa-upload
+   fa-user
+   fa-users
+   fa-video-camera
+   fa-volume-down
+   fa-volume-off
+   fa-volume-up
+   fa-warning
+   fa-wheelchair
+   fa-wrench&#39;
+  )</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-format_date" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">format_date</span><span
+            class="method-args">(date)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="format_date-source">
+            <pre><span class="ruby-comment"># File app/helpers/application_helper.rb, line 7</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">format_date</span>(<span class="ruby-identifier">date</span>)
+  <span class="ruby-identifier">date</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%d.%m.%Y&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">date</span>.<span class="ruby-identifier">present?</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_bg_colors_list" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_bg_colors_list</span><span
+            class="method-args">(type,holder = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_bg_colors_list-source">
+            <pre><span class="ruby-comment"># File app/helpers/application_helper.rb, line 103</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_bg_colors_list</span>(<span class="ruby-identifier">type</span>,<span class="ruby-identifier">holder</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">colors</span> = []
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">type</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">CalendarAction</span><span class="ruby-operator">::</span><span class="ruby-constant">ACTION_TYPE_FOLDING</span>
+      <span class="ruby-keyword">then</span> <span class="ruby-identifier">colors</span> <span class="ruby-operator">+=</span> <span class="ruby-node">%w(#FF0000  #EF827F #CC5A59 #FC403F #DC143B #FE0034 #E0517C)</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">CalendarAction</span><span class="ruby-operator">::</span><span class="ruby-constant">ACTION_TYPE_ANALYSIS</span>
+      <span class="ruby-keyword">then</span> <span class="ruby-identifier">colors</span> <span class="ruby-operator">+=</span> <span class="ruby-node">%w(#0000FF #012E4D #073082 #34489E #284DB7 #0091B2 #001AD1)</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">CalendarAction</span><span class="ruby-operator">::</span><span class="ruby-constant">ACTION_TYPE_EXECUTION</span>
+      <span class="ruby-keyword">then</span> <span class="ruby-identifier">colors</span> <span class="ruby-operator">+=</span> <span class="ruby-node">%w(#008800 #64FE02 #5E9F32 #34CA21 #00A86B #167145 #00A900)</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">CalendarAction</span><span class="ruby-operator">::</span><span class="ruby-constant">ACTION_TYPE_DISCUSSION</span>
+      <span class="ruby-keyword">then</span> <span class="ruby-identifier">colors</span> <span class="ruby-operator">+=</span> <span class="ruby-node">%w(#FF5D00 #EA7501 #FF7518 #FF8800 #FFA500 #FFA500 #FF8400)</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-comment"># if holder.nil? or holder == 1</span>
+  <span class="ruby-comment">#   colors += %w(#ffffcc #ffeda0 #fed976 #feb24c #fd8d3c #fc4e2a #e31a1c #bd0026 red)</span>
+  <span class="ruby-comment"># end</span>
+  <span class="ruby-comment"># if holder.nil? or holder == 2</span>
+  <span class="ruby-comment">#   colors += %w(#f7fcf0 #e0f3db #ccebc5 #a8ddb5 #7bccc4 #4eb3d3 #2b8cbe #0868ac #084081)</span>
+  <span class="ruby-comment"># end</span>
+  <span class="ruby-identifier">colors</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_calendars" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_calendars</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_calendars-source">
+            <pre><span class="ruby-comment"># File app/helpers/application_helper.rb, line 47</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_calendars</span>
+  <span class="ruby-constant">Calendar</span>.<span class="ruby-identifier">visible_to</span>(<span class="ruby-identifier">current_user</span>,<span class="ruby-identifier">params</span>[<span class="ruby-value">:locale</span>])
+  <span class="ruby-comment"># calendars = if current_user.nil?</span>
+  <span class="ruby-comment">#   Calendar.where(:author =&gt; nil)</span>
+  <span class="ruby-comment"># elsif current_user.has_role? :admin</span>
+  <span class="ruby-comment">#   Calendar.all</span>
+  <span class="ruby-comment"># else</span>
+  <span class="ruby-comment">#   Calendar.where(:author =&gt; nil) + Calendar.any_of({:author =&gt; current_user.email},{:town =&gt; current_user.town})</span>
+  <span class="ruby-comment"># end</span>
+  <span class="ruby-comment">#</span>
+  <span class="ruby-comment"># calendars || []</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_file_type_icon" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_file_type_icon</span><span
+            class="method-args">(file_name)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_file_type_icon-source">
+            <pre><span class="ruby-comment"># File app/helpers/application_helper.rb, line 24</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_file_type_icon</span>(<span class="ruby-identifier">file_name</span>)
+  <span class="ruby-keyword">case</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">extname</span>(<span class="ruby-identifier">file_name</span>).<span class="ruby-identifier">upcase</span>
+   <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;.XLS&#39;</span>, <span class="ruby-string">&#39;.XLSX&#39;</span>
+    <span class="ruby-string">&#39;fa-file-excel-o&#39;</span>
+   <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;.DOC&#39;</span>, <span class="ruby-string">&#39;.DOCX&#39;</span>, <span class="ruby-string">&#39;.RTF&#39;</span>
+    <span class="ruby-string">&#39;fa-file-word-o&#39;</span>
+   <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;.XLS&#39;</span>, <span class="ruby-string">&#39;.XLSX&#39;</span>
+    <span class="ruby-string">&#39;fa-file-excel-o&#39;</span>
+   <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;.PPT&#39;</span>, <span class="ruby-string">&#39;.PPTX&#39;</span>
+    <span class="ruby-string">&#39;fa-file-powerpoint-o&#39;</span>
+   <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;.TXT&#39;</span>
+    <span class="ruby-string">&#39;fa-file-text-o&#39;</span>
+   <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;.PDF&#39;</span>
+    <span class="ruby-string">&#39;fa-file-pdf-o&#39;</span>
+   <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;.ZIP&#39;</span>, <span class="ruby-string">&#39;.RAR&#39;</span>
+    <span class="ruby-string">&#39;fa-file-pdf-o&#39;</span>
+   <span class="ruby-keyword">else</span>
+    <span class="ruby-string">&#39;fa-download&#39;</span>
+  <span class="ruby-keyword">end</span>
+
+ <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_nav_link" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_nav_link</span><span
+            class="method-args">(menu_list)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_nav_link-source">
+            <pre><span class="ruby-comment"># File app/helpers/application_helper.rb, line 423</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_nav_link</span>(<span class="ruby-identifier">menu_list</span>)
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">menu_list</span>.<span class="ruby-identifier">link</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">menu_list</span>.<span class="ruby-identifier">link</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-identifier">show_pages_path</span>(<span class="ruby-identifier">menu_list</span>.<span class="ruby-identifier">alias</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">menu_list</span>.<span class="ruby-identifier">link</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;?locale=&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">locale</span>.<span class="ruby-identifier">to_s</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-hexToRgb" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">hexToRgb</span><span
+            class="method-args">(color = "</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="hexToRgb-source">
+            <pre><span class="ruby-comment"># File app/helpers/application_helper.rb, line 11</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">hexToRgb</span>(<span class="ruby-identifier">color</span> = <span class="ruby-node">&quot;#ffffff&quot;</span>)
+ <span class="ruby-identifier">a</span> = ( <span class="ruby-identifier">color</span>.<span class="ruby-identifier">match</span> <span class="ruby-node">/#(..?)(..?)(..?)/</span> )[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">3</span>]
+ <span class="ruby-identifier">a</span>.<span class="ruby-identifier">map!</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span> <span class="ruby-identifier">x</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">x</span> } <span class="ruby-keyword">if</span> <span class="ruby-identifier">color</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">4</span>
+ <span class="ruby-node">&quot;#{a[0].hex},#{a[1].hex},#{a[2].hex}&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-is_current_year" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">is_current_year</span><span
+            class="method-args">(year)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="is_current_year-source">
+            <pre><span class="ruby-comment"># File app/helpers/application_helper.rb, line 3</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">is_current_year</span> <span class="ruby-identifier">year</span>
+  <span class="ruby-identifier">year</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@current_year</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-sortable" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">sortable</span><span
+            class="method-args">(column, title = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="sortable-source">
+            <pre><span class="ruby-comment"># File app/helpers/application_helper.rb, line 17</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">sortable</span>(<span class="ruby-identifier">column</span>, <span class="ruby-identifier">title</span> = <span class="ruby-keyword">nil</span>)
+ <span class="ruby-identifier">title</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">column</span>.<span class="ruby-identifier">titleize</span>
+ <span class="ruby-identifier">css_class</span> = <span class="ruby-identifier">column</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">sort_column</span> <span class="ruby-operator">?</span> <span class="ruby-node">&quot;current #{sort_direction}&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>
+ <span class="ruby-identifier">direction</span> = <span class="ruby-identifier">column</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">sort_column</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">sort_direction</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;asc&quot;</span> <span class="ruby-operator">?</span> <span class="ruby-string">&quot;desc&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-string">&quot;asc&quot;</span>
+ <span class="ruby-identifier">link_to</span> <span class="ruby-identifier">title</span>, {<span class="ruby-value">:sort</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">column</span>, <span class="ruby-value">:direction</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">direction</span>}, {<span class="ruby-value">:class</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">css_class</span>}
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-text_colors_list" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">text_colors_list</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="text_colors_list-source">
+            <pre><span class="ruby-comment"># File app/helpers/application_helper.rb, line 99</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">text_colors_list</span>
+  [<span class="ruby-keyword">nil</span>] <span class="ruby-operator">+</span> <span class="ruby-node">%w(#8dd3c7 #ffffb3 #bebada #fb8072 #ffffff #80b1d3 #fdb462 #b3de69 #fccde5 #d9d9d9 #bc80bd #ccebc5 #ffed6f)</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-undp_colors_list" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">undp_colors_list</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="undp_colors_list-source">
+            <pre><span class="ruby-comment"># File app/helpers/application_helper.rb, line 69</span>
+  <span class="ruby-keyword">def</span> <span class="ruby-identifier">undp_colors_list</span>
+    [<span class="ruby-keyword">nil</span>] <span class="ruby-operator">+</span> <span class="ruby-node">%w(
+#8dd3c7 #ffffb3 #bebada #fb8072 #ffffff #80b1d3 #fdb462 #b3de69 #fccde5 #d9d9d9 #bc80bd #ccebc5 #ffed6f
+#CCCCCC
+#BBBBBB
+#55bbff
+#003366
+#0055aa
+#999999
+#333333
+#0b387c
+#5a90Da
+#a8bccc
+#0088ff
+#1E427E
+#D5EDFB
+#404040
+#444444
+#666666
+#abc4bf
+#edf4fe
+#66c2ff
+#557799
+#434C55
+#555555
+#265f91
+#ffffcc #ffeda0 #fed976 #feb24c #fd8d3c #fc4e2a #e31a1c #bd0026
+)</span>
+  <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

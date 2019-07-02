@@ -345,7 +345,7 @@
         = select_tag 'year_select',
                       options_for_select([[t('taxonomies.index.multiple_delete.all'), nil], [t('repairing.maps.map_select.no_year'), :no_year]] + years_from(2015), selected: "#{@year}"),
                       class: 'form-control'
-    .pull-right.road-condition-select
+    -#.pull-right.road-condition-select
       = render partial: 'repairing/maps/road_condition'
     .pull-right.status-btns
       = render partial: 'repairing/maps/status_btns'

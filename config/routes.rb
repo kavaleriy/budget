@@ -120,6 +120,7 @@ Rails.application.routes.draw do
     get 'maps/road_frame/:zoom/:town_id/:year' => 'maps#frame'
     get 'maps/frame/:zoom/:town_id' => 'maps#frame', as: 'frame_with_town'
     get 'maps/frame/:zoom' => 'maps#frame', as: 'iframe_map_with_zoom'
+    get 'maps/statistic/:town_id' => 'maps#statistic', as: 'maps_statistic'
     get 'property_cross' => 'properties#cross_busroute_with_propertings', as: 'property_cross'
     get 'show_property_info' =>'properties#show_property_info', as: 'show_property_info'
     get 'edit_in_modal' =>'properties#edit_in_modal', as: 'edit_in_modal'

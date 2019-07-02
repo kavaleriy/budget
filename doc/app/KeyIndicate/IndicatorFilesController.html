@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class KeyIndicate::IndicatorFilesController - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script src="../js/jquery.js"></script>
+<script src="../js/darkfish.js"></script>
+
+<link href="../css/fonts.css" rel="stylesheet">
+<link href="../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="../ApplicationController.html">ApplicationController</a>
+  
+</div>
+
+    <div id="includes-section" class="nav-section">
+  <h3>Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><a class="include" href="../ControllerCaching.html">ControllerCaching</a>
+  
+  
+  </ul>
+</div>
+
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-edit">#edit</a>
+    
+    <li ><a href="#method-i-get_data">#get_data</a>
+    
+    <li ><a href="#method-i-get_files">#get_files</a>
+    
+    <li ><a href="#method-i-get_indicators">#get_indicators</a>
+    
+    <li ><a href="#method-i-get_vars">#get_vars</a>
+    
+    <li ><a href="#method-i-index">#index</a>
+    
+    <li ><a href="#method-i-indicator_file_create">#indicator_file_create</a>
+    
+    <li ><a href="#method-i-indicator_file_destroy">#indicator_file_destroy</a>
+    
+    <li ><a href="#method-i-indicator_file_update">#indicator_file_update</a>
+    
+    <li ><a href="#method-i-new">#new</a>
+    
+    <li ><a href="#method-i-reset_table">#reset_table</a>
+    
+    <li ><a href="#method-i-show">#show</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-KeyIndicate::IndicatorFilesController">
+  <h1 id="class-KeyIndicate::IndicatorFilesController" class="class">
+    class KeyIndicate::IndicatorFilesController
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-edit" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">edit</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>GET /key_indicate/indicator_files/1/edit</p>
+          
+          
+
+          
+          <div class="method-source-code" id="edit-source">
+            <pre><span class="ruby-comment"># File app/controllers/key_indicate/indicator_files_controller.rb, line 77</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">edit</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_data" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_data</span><span
+            class="method-args">(data, year)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_data-source">
+            <pre><span class="ruby-comment"># File app/controllers/key_indicate/indicator_files_controller.rb, line 32</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_data</span> <span class="ruby-identifier">data</span>, <span class="ruby-identifier">year</span>
+  <span class="ruby-identifier">indicators</span> = <span class="ruby-constant">KeyIndicate</span><span class="ruby-operator">::</span><span class="ruby-constant">Dictionary</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">get_keys</span>
+  <span class="ruby-identifier">data</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">title</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">town</span> = <span class="ruby-operator">::</span><span class="ruby-constant">Town</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:title</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">title</span>).<span class="ruby-identifier">first</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">town</span>.<span class="ruby-identifier">nil?</span>
+      <span class="ruby-identifier">get_indicators</span>(<span class="ruby-identifier">town</span>, <span class="ruby-identifier">year</span>).<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">key</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">indicators</span>[<span class="ruby-identifier">key</span>]
+          <span class="ruby-keyword">if</span> <span class="ruby-identifier">indicators</span>[<span class="ruby-identifier">key</span>][<span class="ruby-string">&#39;type&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;to_i&#39;</span>
+            <span class="ruby-identifier">amount</span> = <span class="ruby-identifier">value</span>[<span class="ruby-string">&#39;amount&#39;</span>].<span class="ruby-identifier">to_i</span>
+          <span class="ruby-keyword">else</span>
+            <span class="ruby-identifier">amount</span> = <span class="ruby-identifier">value</span>[<span class="ruby-string">&#39;amount&#39;</span>].<span class="ruby-identifier">to_f</span>
+          <span class="ruby-keyword">end</span>
+          <span class="ruby-identifier">indicators</span>[<span class="ruby-identifier">key</span>][<span class="ruby-string">&#39;towns&#39;</span>] = {} <span class="ruby-keyword">if</span> <span class="ruby-identifier">indicators</span>[<span class="ruby-identifier">key</span>][<span class="ruby-string">&#39;towns&#39;</span>].<span class="ruby-identifier">nil?</span>
+          <span class="ruby-identifier">indicators</span>[<span class="ruby-identifier">key</span>][<span class="ruby-string">&#39;towns&#39;</span>][<span class="ruby-identifier">title</span>] = {} <span class="ruby-keyword">if</span> <span class="ruby-identifier">indicators</span>[<span class="ruby-identifier">key</span>][<span class="ruby-string">&#39;towns&#39;</span>][<span class="ruby-identifier">title</span>].<span class="ruby-identifier">nil?</span>
+          <span class="ruby-identifier">indicators</span>[<span class="ruby-identifier">key</span>][<span class="ruby-string">&#39;towns&#39;</span>][<span class="ruby-identifier">title</span>][<span class="ruby-string">&#39;amount&#39;</span>] = <span class="ruby-identifier">amount</span>
+          <span class="ruby-identifier">indicators</span>[<span class="ruby-identifier">key</span>][<span class="ruby-string">&#39;max_amount&#39;</span>] = <span class="ruby-value">0</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">indicators</span>[<span class="ruby-identifier">key</span>][<span class="ruby-string">&#39;max_amount&#39;</span>].<span class="ruby-identifier">nil?</span>
+          <span class="ruby-identifier">indicators</span>[<span class="ruby-identifier">key</span>][<span class="ruby-string">&#39;max_amount&#39;</span>] = <span class="ruby-identifier">amount</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">amount</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">indicators</span>[<span class="ruby-identifier">key</span>][<span class="ruby-string">&#39;max_amount&#39;</span>]
+          <span class="ruby-identifier">indicators</span>[<span class="ruby-identifier">key</span>][<span class="ruby-string">&#39;towns&#39;</span>][<span class="ruby-identifier">title</span>][<span class="ruby-string">&#39;description&#39;</span>] = <span class="ruby-identifier">value</span>[<span class="ruby-string">&#39;description&#39;</span>]
+        <span class="ruby-keyword">end</span>
+      }
+    <span class="ruby-keyword">end</span>
+  }
+  <span class="ruby-identifier">indicators</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_files" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_files</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_files-source">
+            <pre><span class="ruby-comment"># File app/controllers/key_indicate/indicator_files_controller.rb, line 125</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_files</span>
+  <span class="ruby-ivar">@town</span> = <span class="ruby-operator">::</span><span class="ruby-constant">Town</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:town</span>])
+  <span class="ruby-identifier">render</span> <span class="ruby-value">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;/key_indicate/indicator_files/indicator_files&#39;</span>, <span class="ruby-value">:locals</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:town</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@town</span>, <span class="ruby-value">:files</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@town</span>.<span class="ruby-identifier">key_indicate_indicator_files</span> }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_indicators" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_indicators</span><span
+            class="method-args">(town, year)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_indicators-source">
+            <pre><span class="ruby-comment"># File app/controllers/key_indicate/indicator_files_controller.rb, line 57</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_indicators</span> <span class="ruby-identifier">town</span>, <span class="ruby-identifier">year</span>
+  <span class="ruby-identifier">indicators</span> = {}
+  <span class="ruby-identifier">town</span>.<span class="ruby-identifier">key_indicate_indicator_files</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">file</span>.<span class="ruby-identifier">key_indicate_indicators</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">indicator</span><span class="ruby-operator">|</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">indicator</span>[<span class="ruby-string">&#39;year&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">year</span>
+        <span class="ruby-identifier">key</span> = <span class="ruby-identifier">indicator</span>[<span class="ruby-string">&#39;key_indicator&#39;</span>]
+        <span class="ruby-identifier">indicators</span>[<span class="ruby-identifier">key</span>] = {}
+        <span class="ruby-identifier">indicators</span>[<span class="ruby-identifier">key</span>][<span class="ruby-string">&#39;amount&#39;</span>] = <span class="ruby-identifier">indicator</span>[<span class="ruby-string">&#39;amount&#39;</span>]
+        <span class="ruby-identifier">indicators</span>[<span class="ruby-identifier">key</span>][<span class="ruby-string">&#39;description&#39;</span>] = <span class="ruby-identifier">indicator</span>[<span class="ruby-string">&#39;description&#39;</span>]
+      <span class="ruby-keyword">end</span>
+    }
+  }
+  <span class="ruby-identifier">indicators</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_vars" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_vars</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_vars-source">
+            <pre><span class="ruby-comment"># File app/controllers/key_indicate/indicator_files_controller.rb, line 18</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_vars</span>
+  <span class="ruby-identifier">render</span> <span class="ruby-value">:json</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-string">&#39;towns&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@towns</span>, <span class="ruby-string">&#39;initial_towns&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@initial_towns</span>}
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-index" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">index</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>GET /key_indicate/indicator_files GET /key_indicate/indicator_files.json</p>
+          
+          
+
+          
+          <div class="method-source-code" id="index-source">
+            <pre><span class="ruby-comment"># File app/controllers/key_indicate/indicator_files_controller.rb, line 14</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
+  <span class="ruby-ivar">@indicators</span> = <span class="ruby-identifier">get_data</span> <span class="ruby-node">%w(Київ Львів Одеса)</span>, <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">year</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-indicator_file_create" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">indicator_file_create</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="indicator_file_create-source">
+            <pre><span class="ruby-comment"># File app/controllers/key_indicate/indicator_files_controller.rb, line 80</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">indicator_file_create</span>
+  <span class="ruby-ivar">@indicator_files</span> = []
+
+  <span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;indicate_file&#39;</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">doc</span> = <span class="ruby-constant">KeyIndicate</span><span class="ruby-operator">::</span><span class="ruby-constant">IndicatorFile</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">doc</span>.<span class="ruby-identifier">indicate_file</span> = <span class="ruby-identifier">f</span>
+    <span class="ruby-identifier">params</span>[<span class="ruby-value">:key_indicate_indicator_files</span>][<span class="ruby-value">:title</span>].<span class="ruby-identifier">blank?</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">doc</span>.<span class="ruby-identifier">title</span> = <span class="ruby-identifier">f</span>.<span class="ruby-identifier">original_filename</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">doc</span>.<span class="ruby-identifier">title</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:key_indicate_indicator_files</span>][<span class="ruby-value">:title</span>]
+    <span class="ruby-identifier">doc</span>.<span class="ruby-identifier">description</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:key_indicate_indicator_files</span>][<span class="ruby-value">:description</span>]
+    <span class="ruby-identifier">doc</span>.<span class="ruby-identifier">town</span> = <span class="ruby-ivar">@town</span>
+    <span class="ruby-identifier">doc</span>.<span class="ruby-identifier">author</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">email</span>
+    <span class="ruby-identifier">doc</span>.<span class="ruby-identifier">save</span>
+    <span class="ruby-ivar">@indicator_files</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">doc</span>
+
+    <span class="ruby-identifier">table</span> = <span class="ruby-identifier">read_table_from_file</span> <span class="ruby-string">&#39;public/uploads/key_indicate/indicator_file/indicate_file/&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">doc</span>.<span class="ruby-identifier">_id</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;/&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">doc</span>.<span class="ruby-identifier">indicate_file</span>.<span class="ruby-identifier">filename</span>
+    <span class="ruby-identifier">doc</span>.<span class="ruby-identifier">import</span> <span class="ruby-identifier">table</span>
+  <span class="ruby-keyword">end</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;indicate_file&#39;</span>].<span class="ruby-identifier">nil?</span>
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> {}
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">head</span> <span class="ruby-value">:no_content</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">:created</span> }
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-indicator_file_destroy" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">indicator_file_destroy</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="indicator_file_destroy-source">
+            <pre><span class="ruby-comment"># File app/controllers/key_indicate/indicator_files_controller.rb, line 116</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">indicator_file_destroy</span>
+  <span class="ruby-identifier">indicator_file</span> = <span class="ruby-constant">KeyIndicate</span><span class="ruby-operator">::</span><span class="ruby-constant">IndicatorFile</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:indicator_file_id</span>])
+  <span class="ruby-identifier">indicator_file</span>.<span class="ruby-identifier">destroy</span>
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> {}
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">head</span> <span class="ruby-value">:no_content</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">:deleted</span> }
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-indicator_file_update" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">indicator_file_update</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="indicator_file_update-source">
+            <pre><span class="ruby-comment"># File app/controllers/key_indicate/indicator_files_controller.rb, line 103</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">indicator_file_update</span>
+  <span class="ruby-identifier">indicator_file</span> = <span class="ruby-constant">KeyIndicate</span><span class="ruby-operator">::</span><span class="ruby-constant">IndicatorFile</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:indicator_file_id</span>])
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">indicator_file</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">key_indicate_indicator_file_params</span>)
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> {}
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">head</span> <span class="ruby-value">:no_content</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">:updated</span> }
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">:unprocessable_entity</span> }
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@town</span>.<span class="ruby-identifier">errors</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">:unprocessable_entity</span> }
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>GET /key_indicate/indicator_files/new</p>
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File app/controllers/key_indicate/indicator_files_controller.rb, line 73</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">new</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-reset_table" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">reset_table</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="reset_table-source">
+            <pre><span class="ruby-comment"># File app/controllers/key_indicate/indicator_files_controller.rb, line 27</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">reset_table</span>
+  <span class="ruby-ivar">@indicators</span> = <span class="ruby-identifier">get_data</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:data</span>], <span class="ruby-identifier">params</span>[<span class="ruby-value">:year</span>].<span class="ruby-identifier">to_i</span>
+  <span class="ruby-identifier">render</span> <span class="ruby-value">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;/key_indicate/indicator_files/indicators_table&#39;</span>, <span class="ruby-value">:locals</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:indicators</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@indicators</span>, <span class="ruby-value">:towns</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:data</span>]}
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-show" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">show</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>GET /key_indicate/indicator_files/1 GET
+/key_indicate/indicator_files/1.json</p>
+          
+          
+
+          
+          <div class="method-source-code" id="show-source">
+            <pre><span class="ruby-comment"># File app/controllers/key_indicate/indicator_files_controller.rb, line 24</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

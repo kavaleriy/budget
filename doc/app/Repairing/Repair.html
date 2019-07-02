@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class Repairing::Repair - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script src="../js/jquery.js"></script>
+<script src="../js/darkfish.js"></script>
+
+<link href="../css/fonts.css" rel="stylesheet">
+<link href="../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="../Object.html">Object</a>
+  
+</div>
+
+    <div id="includes-section" class="nav-section">
+  <h3>Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><span class="include">Mongoid::Document</span>
+  
+  
+  
+    <li><span class="include">Mongoid::Timestamps</span>
+  
+  
+  
+    <li><a class="include" href="RepairsHelper.html">Repairing::RepairsHelper</a>
+  
+  
+  </ul>
+</div>
+
+    <div id="extends-section" class="nav-section">
+  <h3>Extended With Modules</h3>
+
+  <ul class="link-list">
+    
+  
+    <li><a class="extend" href="../RepairingLayerUpload.html">RepairingLayerUpload</a>
+  
+  
+  </ul>
+</div>
+
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-check_address">#check_address</a>
+    
+    <li ><a href="#method-i-check_and_emend_edrpou">#check_and_emend_edrpou</a>
+    
+    <li ><a href="#method-i-geocode">#geocode</a>
+    
+    <li ><a href="#method-i-permit_appeal-3F">#permit_appeal?</a>
+    
+    <li ><a href="#method-i-repair_coordinate">#repair_coordinate</a>
+    
+    <li ><a href="#method-i-set_end_date">#set_end_date</a>
+    
+    <li ><a href="#method-i-town_emails">#town_emails</a>
+    
+    <li ><a href="#method-i-validate_coords">#validate_coords</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-Repairing::Repair">
+  <h1 id="class-Repairing::Repair" class="class">
+    class Repairing::Repair
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-check_address" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">check_address</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="check_address-source">
+            <pre><span class="ruby-comment"># File app/models/repairing/repair.rb, line 78</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">check_address</span>
+  (<span class="ruby-identifier">address</span>.<span class="ruby-identifier">present?</span>) <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-operator">!</span><span class="ruby-identifier">coordinates</span>.<span class="ruby-identifier">present?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">address_changed?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">address_to_changed?</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-check_and_emend_edrpou" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">check_and_emend_edrpou</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="check_and_emend_edrpou-source">
+            <pre><span class="ruby-comment"># File app/models/repairing/repair.rb, line 49</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">check_and_emend_edrpou</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">edrpou_artist</span>         = <span class="ruby-identifier">correct_edrpou</span>(<span class="ruby-identifier">edrpou_artist</span>)          <span class="ruby-keyword">if</span> <span class="ruby-identifier">edrpou_length_short?</span>(<span class="ruby-identifier">edrpou_artist</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">edrpou_spending_units</span> = <span class="ruby-identifier">correct_edrpou</span>(<span class="ruby-identifier">edrpou_spending_units</span>)  <span class="ruby-keyword">if</span> <span class="ruby-identifier">edrpou_length_short?</span>(<span class="ruby-identifier">edrpou_spending_units</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-geocode" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">geocode</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="geocode-source">
+            <pre><span class="ruby-comment"># File app/models/repairing/repair.rb, line 74</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">geocode</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">coordinates</span> = <span class="ruby-constant">RepairingGeocoder</span>.<span class="ruby-identifier">calc_coordinates</span>(<span class="ruby-identifier">address</span>, <span class="ruby-identifier">address_to</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-permit_appeal-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">permit_appeal?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="permit_appeal-3F-source">
+            <pre><span class="ruby-comment"># File app/models/repairing/repair.rb, line 86</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">permit_appeal?</span>
+  <span class="ruby-comment"># layer.status.eql?(&#39;fact&#39;) &amp;&amp; layer.town.permit_emails</span>
+  <span class="ruby-identifier">layer</span>.<span class="ruby-identifier">town</span>.<span class="ruby-identifier">permit_emails</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-repair_coordinate" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">repair_coordinate</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="repair_coordinate-source">
+            <pre><span class="ruby-comment"># File app/models/repairing/repair.rb, line 91</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">repair_coordinate</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">coordinates</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">Array</span>)
+    <span class="ruby-identifier">size</span> = <span class="ruby-identifier">coordinates</span>.<span class="ruby-identifier">size</span>
+    <span class="ruby-identifier">coordinates</span>[<span class="ruby-identifier">size</span> <span class="ruby-operator">/</span> <span class="ruby-value">2</span>]
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">coordinates</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-set_end_date" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">set_end_date</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="set_end_date-source">
+            <pre><span class="ruby-comment"># File app/models/repairing/repair.rb, line 54</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_end_date</span>
+  <span class="ruby-comment"># If repair_end_date is empty fill it.</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-keyword">self</span>.<span class="ruby-identifier">repair_start_date</span>.<span class="ruby-identifier">blank?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">repair_end_date</span>.<span class="ruby-identifier">blank?</span>
+    <span class="ruby-identifier">start_year</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">repair_start_date</span>.<span class="ruby-identifier">year</span>
+    <span class="ruby-identifier">end_date</span> = <span class="ruby-constant">Date</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">y</span> = <span class="ruby-identifier">start_year</span>, <span class="ruby-identifier">m</span> = <span class="ruby-value">12</span>, <span class="ruby-identifier">d</span> = <span class="ruby-value">31</span>)
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">repair_end_date</span> = <span class="ruby-identifier">end_date</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-town_emails" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">town_emails</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="town_emails-source">
+            <pre><span class="ruby-comment"># File app/models/repairing/repair.rb, line 82</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">town_emails</span>
+  <span class="ruby-identifier">layer</span>.<span class="ruby-identifier">town</span>.<span class="ruby-identifier">present_emails</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-validate_coords" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">validate_coords</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="validate_coords-source">
+            <pre><span class="ruby-comment"># File app/models/repairing/repair.rb, line 63</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">validate_coords</span>
+  <span class="ruby-comment"># TODO</span>
+  <span class="ruby-comment"># if coordinates[0] and coordinates[0].kind_of?(Array)</span>
+  <span class="ruby-comment">#   coordinates.each do |coords|</span>
+  <span class="ruby-comment">#     check_coords_array(coords)</span>
+  <span class="ruby-comment">#   end</span>
+  <span class="ruby-comment"># else</span>
+  <span class="ruby-comment">#   check_coords_array(coordinates)</span>
+  <span class="ruby-comment"># end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

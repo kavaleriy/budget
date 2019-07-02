@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class TownsController - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="ApplicationController.html">ApplicationController</a>
+  
+</div>
+
+    <div id="includes-section" class="nav-section">
+  <h3>Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><a class="include" href="ControllerCaching.html">ControllerCaching</a>
+  
+  
+  
+    <li><a class="include" href="BudgetFileUpload.html">BudgetFileUpload</a>
+  
+  
+  </ul>
+</div>
+
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-create">#create</a>
+    
+    <li ><a href="#method-i-destroy">#destroy</a>
+    
+    <li ><a href="#method-i-edit">#edit</a>
+    
+    <li ><a href="#method-i-edit_by_xls">#edit_by_xls</a>
+    
+    <li ><a href="#method-i-export_town_in_xls">#export_town_in_xls</a>
+    
+    <li ><a href="#method-i-get_child_regions">#get_child_regions</a>
+    
+    <li ><a href="#method-i-get_child_towns">#get_child_towns</a>
+    
+    <li ><a href="#method-i-get_parent">#get_parent</a>
+    
+    <li ><a href="#method-i-index">#index</a>
+    
+    <li ><a href="#method-i-indicator_file_destroy">#indicator_file_destroy</a>
+    
+    <li ><a href="#method-i-new">#new</a>
+    
+    <li ><a href="#method-i-new_town">#new_town</a>
+    
+    <li ><a href="#method-i-search">#search</a>
+    
+    <li ><a href="#method-i-search_for_active_towns">#search_for_active_towns</a>
+    
+    <li ><a href="#method-i-search_for_areas">#search_for_areas</a>
+    
+    <li ><a href="#method-i-search_for_documents">#search_for_documents</a>
+    
+    <li ><a href="#method-i-search_for_regions">#search_for_regions</a>
+    
+    <li ><a href="#method-i-search_for_towns">#search_for_towns</a>
+    
+    <li ><a href="#method-i-search_for_towns_and_areas">#search_for_towns_and_areas</a>
+    
+    <li ><a href="#method-i-show">#show</a>
+    
+    <li ><a href="#method-i-update">#update</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-TownsController">
+  <h1 id="class-TownsController" class="class">
+    class TownsController
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-create" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>POST /indicator_files POST /indicator_files.json</p>
+          
+          
+
+          
+          <div class="method-source-code" id="create-source">
+            <pre><span class="ruby-comment"># File app/controllers/towns_controller.rb, line 123</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
+  <span class="ruby-ivar">@town</span> = <span class="ruby-constant">Town</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">town_params</span>)
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+
+  <span class="ruby-ivar">@town</span>.<span class="ruby-identifier">area_title</span> = <span class="ruby-constant">Town</span>.<span class="ruby-identifier">get_area_title</span>(<span class="ruby-identifier">town_params</span>[<span class="ruby-value">:koatuu</span>])
+    <span class="ruby-keyword">if</span>  <span class="ruby-ivar">@town</span>.<span class="ruby-identifier">save</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@town</span>, <span class="ruby-identifier">notice</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;Town was successfully created.&#39;</span> }
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:show</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">:created</span>, <span class="ruby-identifier">location</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@town</span> }
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:new_town</span> }
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@town</span>.<span class="ruby-identifier">errors</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">:unprocessable_entity</span> }
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-destroy" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">destroy</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>DELETE /indicator_files/1 DELETE /indicator_files/1.json</p>
+          
+          
+
+          
+          <div class="method-source-code" id="destroy-source">
+            <pre><span class="ruby-comment"># File app/controllers/towns_controller.rb, line 161</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">admin?</span>
+    <span class="ruby-ivar">@town</span>.<span class="ruby-identifier">destroy</span>
+    <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">towns_url</span>, <span class="ruby-identifier">notice</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;Town was successfully destroyed.&#39;</span> }
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">head</span> <span class="ruby-value">:no_content</span> }
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-edit" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">edit</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>GET /indicator_files/1/edit</p>
+          
+          
+
+          
+          <div class="method-source-code" id="edit-source">
+            <pre><span class="ruby-comment"># File app/controllers/towns_controller.rb, line 118</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">edit</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-edit_by_xls" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">edit_by_xls</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="edit_by_xls-source">
+            <pre><span class="ruby-comment"># File app/controllers/towns_controller.rb, line 175</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">edit_by_xls</span>
+  <span class="ruby-keyword">begin</span>
+    <span class="ruby-identifier">errors_arr</span> = []
+    <span class="ruby-identifier">table</span> = <span class="ruby-identifier">get_arr_by_table_path</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:xls</span>])
+    <span class="ruby-identifier">errors_arr</span> = <span class="ruby-constant">Town</span>.<span class="ruby-identifier">edit_nested_by_table</span>(<span class="ruby-identifier">table</span>, <span class="ruby-identifier">params</span>[<span class="ruby-value">:nested</span>])
+  <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Mongoid</span><span class="ruby-operator">::</span><span class="ruby-constant">Errors</span><span class="ruby-operator">::</span><span class="ruby-constant">UnknownAttribute</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">detail</span>
+    <span class="ruby-identifier">errors_arr</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;xls.check_row_name&#39;</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">errors_arr</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:back</span>, <span class="ruby-identifier">notice</span><span class="ruby-operator">:</span> <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;xls.done&#39;</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:back</span>, <span class="ruby-identifier">alert</span><span class="ruby-operator">:</span> <span class="ruby-identifier">errors_arr</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-export_town_in_xls" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">export_town_in_xls</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="export_town_in_xls-source">
+            <pre><span class="ruby-comment"># File app/controllers/towns_controller.rb, line 191</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">export_town_in_xls</span>
+  <span class="ruby-identifier">require</span> <span class="ruby-string">&#39;xls_worker&#39;</span>
+  <span class="ruby-ivar">@res_table</span> =  <span class="ruby-constant">XlsWorker</span>.<span class="ruby-identifier">create_xls_by_town</span>(<span class="ruby-ivar">@town</span>)
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xls</span> { <span class="ruby-identifier">send_data</span> <span class="ruby-ivar">@res_table</span> }
+  <span class="ruby-keyword">end</span>
+
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_child_regions" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_child_regions</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_child_regions-source">
+            <pre><span class="ruby-comment"># File app/controllers/towns_controller.rb, line 204</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_child_regions</span>
+  <span class="ruby-ivar">@koatuu</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:koatuu</span>]
+  <span class="ruby-identifier">area_code</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:koatuu</span>].<span class="ruby-identifier">slice</span>(<span class="ruby-value">0</span>,<span class="ruby-value">2</span>)
+  <span class="ruby-ivar">@town</span> = <span class="ruby-constant">Town</span>.<span class="ruby-identifier">cities</span>(<span class="ruby-identifier">area_code</span>)
+  <span class="ruby-ivar">@regions</span> = <span class="ruby-constant">Town</span>.<span class="ruby-identifier">regions</span>(<span class="ruby-identifier">area_code</span>).<span class="ruby-identifier">to_a</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_child_towns" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_child_towns</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_child_towns-source">
+            <pre><span class="ruby-comment"># File app/controllers/towns_controller.rb, line 211</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_child_towns</span>
+  <span class="ruby-ivar">@koatuu</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:koatuu</span>]
+  <span class="ruby-identifier">area_code</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:koatuu</span>].<span class="ruby-identifier">slice</span>(<span class="ruby-value">0</span>,<span class="ruby-value">5</span>)
+  <span class="ruby-identifier">region</span> = <span class="ruby-constant">Town</span>.<span class="ruby-identifier">get_town_by_koatuu</span>(<span class="ruby-ivar">@koatuu</span>).<span class="ruby-identifier">first</span>
+  <span class="ruby-identifier">region_town</span> = <span class="ruby-constant">Town</span>.<span class="ruby-identifier">region_towns</span>(<span class="ruby-identifier">region</span>.<span class="ruby-identifier">id</span>)
+  <span class="ruby-identifier">region_cities</span> = <span class="ruby-constant">Town</span>.<span class="ruby-identifier">towns</span>(<span class="ruby-identifier">area_code</span>)
+
+  <span class="ruby-ivar">@cities</span> = <span class="ruby-identifier">region_town</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">region_cities</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_parent" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_parent</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_parent-source">
+            <pre><span class="ruby-comment"># File app/controllers/towns_controller.rb, line 200</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_parent</span>
+  <span class="ruby-ivar">@parent</span> = <span class="ruby-constant">Town</span>.<span class="ruby-identifier">has_parents</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:level</span>], <span class="ruby-identifier">params</span>[<span class="ruby-value">:koatuu</span>])
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-index" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">index</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>GET /indicator_files GET /indicator_files.json</p>
+          
+          
+
+          
+          <div class="method-source-code" id="index-source">
+            <pre><span class="ruby-comment"># File app/controllers/towns_controller.rb, line 98</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
+  <span class="ruby-ivar">@test_town</span> = <span class="ruby-constant">Town</span>.<span class="ruby-identifier">get_test_town</span>.<span class="ruby-identifier">first</span>
+  <span class="ruby-ivar">@towns</span> = <span class="ruby-constant">Town</span>.<span class="ruby-identifier">areas</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-indicator_file_destroy" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">indicator_file_destroy</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="indicator_file_destroy-source">
+            <pre><span class="ruby-comment"># File app/controllers/towns_controller.rb, line 171</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">indicator_file_destroy</span>
+  <span class="ruby-comment"># code here</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>GET /indicator_files/indicator_file</p>
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File app/controllers/towns_controller.rb, line 109</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">new</span>
+  <span class="ruby-ivar">@town</span> = <span class="ruby-constant">Town</span>.<span class="ruby-identifier">new</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-new_town" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new_town</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="new_town-source">
+            <pre><span class="ruby-comment"># File app/controllers/towns_controller.rb, line 113</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">new_town</span>
+  <span class="ruby-ivar">@town</span> = <span class="ruby-constant">Town</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-ivar">@levels</span> = <span class="ruby-constant">Town</span>.<span class="ruby-identifier">get_levels_array</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-search" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">search</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="search-source">
+            <pre><span class="ruby-comment"># File app/controllers/towns_controller.rb, line 8</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">search</span>
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">q</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:query</span>].<span class="ruby-identifier">mb_chars</span>.<span class="ruby-identifier">capitalize</span>.<span class="ruby-identifier">to_s</span>
+    <span class="ruby-ivar">@towns</span> = <span class="ruby-constant">Town</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:title</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">new</span>(<span class="ruby-node">&quot;^#{q}.*&quot;</span>)).<span class="ruby-identifier">order_by</span>(<span class="ruby-value">:level</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:asc</span>)
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-search_for_active_towns" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">search_for_active_towns</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Method for find towns at town profile</p>
+          
+          
+
+          
+          <div class="method-source-code" id="search_for_active_towns-source">
+            <pre><span class="ruby-comment"># File app/controllers/towns_controller.rb, line 88</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">search_for_active_towns</span>
+  <span class="ruby-identifier">q</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:query</span>].<span class="ruby-identifier">mb_chars</span>.<span class="ruby-identifier">capitalize</span>.<span class="ruby-identifier">to_s</span>
+  <span class="ruby-ivar">@towns</span>  = <span class="ruby-constant">Town</span>.<span class="ruby-identifier">get_central_authority_towns</span>(<span class="ruby-identifier">q</span>).<span class="ruby-identifier">order_by</span>(<span class="ruby-value">:level</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:asc</span>)
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;search&#39;</span>}
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-search_for_areas" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">search_for_areas</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Method doesn&#39;t use see at routes search_for_areas_town WARN! maybe use
+it in ajax</p>
+          
+          
+
+          
+          <div class="method-source-code" id="search_for_areas-source">
+            <pre><span class="ruby-comment"># File app/controllers/towns_controller.rb, line 74</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">search_for_areas</span>
+  <span class="ruby-ivar">@towns</span> = <span class="ruby-identifier">use_cache</span> <span class="ruby-identifier">get_controller_action_key</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-constant">Town</span>.<span class="ruby-identifier">all</span>.<span class="ruby-identifier">reject</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">town</span><span class="ruby-operator">|</span> <span class="ruby-identifier">town</span>.<span class="ruby-identifier">level</span> <span class="ruby-operator">!=</span> <span class="ruby-value">1</span> }
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">q</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:query</span>].<span class="ruby-identifier">mb_chars</span>.<span class="ruby-identifier">capitalize</span>.<span class="ruby-identifier">to_s</span>
+    <span class="ruby-ivar">@towns</span> = <span class="ruby-ivar">@towns</span>.<span class="ruby-identifier">select</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">new</span>(<span class="ruby-node">&quot;^#{q}.*&quot;</span>) <span class="ruby-operator">=~</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">title</span> }
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span>
+  <span class="ruby-keyword">end</span>
+
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-search_for_documents" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">search_for_documents</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="search_for_documents-source">
+            <pre><span class="ruby-comment"># File app/controllers/towns_controller.rb, line 16</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">search_for_documents</span>
+  <span class="ruby-ivar">@towns</span> = <span class="ruby-identifier">use_cache</span> <span class="ruby-identifier">get_controller_action_key</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-constant">Town</span>.<span class="ruby-identifier">all</span>.<span class="ruby-identifier">reject</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">town</span><span class="ruby-operator">|</span> <span class="ruby-identifier">town</span>.<span class="ruby-identifier">documentation_documents</span>.<span class="ruby-identifier">empty?</span>}
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">q</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:query</span>].<span class="ruby-identifier">mb_chars</span>.<span class="ruby-identifier">capitalize</span>.<span class="ruby-identifier">to_s</span>
+    <span class="ruby-ivar">@towns</span> = <span class="ruby-ivar">@towns</span>.<span class="ruby-identifier">select</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">new</span>(<span class="ruby-node">&quot;^#{q}.*&quot;</span>) <span class="ruby-operator">=~</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">title</span> }
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-search_for_regions" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">search_for_regions</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="search_for_regions-source">
+            <pre><span class="ruby-comment"># File app/controllers/towns_controller.rb, line 44</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">search_for_regions</span>
+  <span class="ruby-ivar">@towns</span> = <span class="ruby-identifier">use_cache</span> <span class="ruby-identifier">get_controller_action_key</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-constant">Town</span>.<span class="ruby-identifier">all</span>.<span class="ruby-identifier">reject</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">town</span><span class="ruby-operator">|</span> <span class="ruby-identifier">town</span>.<span class="ruby-identifier">level</span> <span class="ruby-operator">!=</span> <span class="ruby-value">2</span> }
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">q</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:query</span>].<span class="ruby-identifier">mb_chars</span>.<span class="ruby-identifier">capitalize</span>.<span class="ruby-identifier">to_s</span>
+    <span class="ruby-ivar">@towns</span> = <span class="ruby-ivar">@towns</span>.<span class="ruby-identifier">select</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">new</span>(<span class="ruby-node">&quot;^#{q}.*&quot;</span>) <span class="ruby-operator">=~</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">title</span> }
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span>
+  <span class="ruby-keyword">end</span>
+
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-search_for_towns" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">search_for_towns</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="search_for_towns-source">
+            <pre><span class="ruby-comment"># File app/controllers/towns_controller.rb, line 57</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">search_for_towns</span>
+  <span class="ruby-ivar">@towns</span> = <span class="ruby-identifier">use_cache</span> <span class="ruby-identifier">get_controller_action_key</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-comment"># Town.all.reject{|town| town.level == 1 }</span>
+    <span class="ruby-constant">Town</span>.<span class="ruby-identifier">all</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">q</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:query</span>].<span class="ruby-identifier">mb_chars</span>.<span class="ruby-identifier">capitalize</span>.<span class="ruby-identifier">to_s</span>
+    <span class="ruby-ivar">@towns</span> = <span class="ruby-ivar">@towns</span>.<span class="ruby-identifier">select</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">new</span>(<span class="ruby-node">&quot;^#{q}.*&quot;</span>) <span class="ruby-operator">=~</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">title</span> }
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span>
+  <span class="ruby-keyword">end</span>
+
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-search_for_towns_and_areas" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">search_for_towns_and_areas</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Method doesn&#39;t use see at routes search_for_areas_town WARN! maybe use
+it in ajax</p>
+          
+          
+
+          
+          <div class="method-source-code" id="search_for_towns_and_areas-source">
+            <pre><span class="ruby-comment"># File app/controllers/towns_controller.rb, line 31</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">search_for_towns_and_areas</span>
+  <span class="ruby-ivar">@towns</span> = <span class="ruby-identifier">use_cache</span> <span class="ruby-identifier">get_controller_action_key</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-constant">Town</span>.<span class="ruby-identifier">all</span>.<span class="ruby-identifier">reject</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">town</span><span class="ruby-operator">|</span> <span class="ruby-identifier">town</span>.<span class="ruby-identifier">level</span> <span class="ruby-operator">!=</span> <span class="ruby-value">13</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">town</span>.<span class="ruby-identifier">level</span> <span class="ruby-operator">!=</span> <span class="ruby-value">1</span> }
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">q</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:query</span>].<span class="ruby-identifier">mb_chars</span>.<span class="ruby-identifier">capitalize</span>.<span class="ruby-identifier">to_s</span>
+    <span class="ruby-ivar">@towns</span> = <span class="ruby-ivar">@towns</span>.<span class="ruby-identifier">select</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">new</span>(<span class="ruby-node">&quot;^#{q}.*&quot;</span>) <span class="ruby-operator">=~</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">title</span> }
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span>
+  <span class="ruby-keyword">end</span>
+
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-show" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">show</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>GET /indicator_files/1 GET /indicator_files/1.json</p>
+          
+          
+
+          
+          <div class="method-source-code" id="show-source">
+            <pre><span class="ruby-comment"># File app/controllers/towns_controller.rb, line 105</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-update" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">update</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>PATCH/PUT /indicator_files/1 PATCH/PUT /indicator_files/1.json</p>
+          
+          
+
+          
+          <div class="method-source-code" id="update-source">
+            <pre><span class="ruby-comment"># File app/controllers/towns_controller.rb, line 142</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">attrs</span> = <span class="ruby-identifier">town_params</span>
+    <span class="ruby-identifier">attrs</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value">:coordinates</span>)
+    <span class="ruby-identifier">coordinates</span> = <span class="ruby-identifier">eval</span>(<span class="ruby-identifier">town_params</span>[<span class="ruby-value">:coordinates</span>] <span class="ruby-operator">||</span> <span class="ruby-string">&#39;&#39;</span>)
+
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@town</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">attrs</span>)
+      <span class="ruby-ivar">@town</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">coordinates</span><span class="ruby-operator">:</span> <span class="ruby-identifier">coordinates</span>)
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@town</span>, <span class="ruby-identifier">notice</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;Town was successfully updated.&#39;</span> }
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:show</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">:ok</span>, <span class="ruby-identifier">location</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@town</span> }
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:edit</span> }
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@town</span>.<span class="ruby-identifier">errors</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">:unprocessable_entity</span> }
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

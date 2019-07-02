@@ -58,6 +58,7 @@ module Properting
     end
 
     def geo_json
+      # binding.pry
       result = {
         type: 'FeatureCollection',
         features: @properting_layer.to_geo_json
