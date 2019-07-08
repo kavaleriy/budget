@@ -8,11 +8,9 @@ class Widgets::GovVisifyController < Widgets::WidgetsController
   MAX_NODES_PER_LEVEL = 100
 
   def index
-    binding.pry
-    if @budget_file.class.eql?(TaxonomyRot)
+    if @budget_file.class.to_s.eql?('TaxonomyRov')
       expenses = Budget::GovFiles::Expense.where(koatuu: @budget_file.town.koatuu).order('month asc')
-      res = Budget::Files::Builders::Tree.new(expenses, 'function_code', '2017', 'function_code_name', 'budget_estimate', 'total_done', 4).call
-      binding.pry
+      res = Budget::Files::Builders::EconomicExpenses.new(expenses, 'function_code', '2017', 'function_code_name', 'budget_estimate', 'total_done', 4).call
     else
       incomes = Budget::GovFiles::Income.where(koatuu: @budget_file.town.koatuu).order('month asc')
       res = Budget::Files::Builders::Tree.new(incomes, 'income_code', '2017', 'income_code_name', 'budget_plan', 'total_done').call

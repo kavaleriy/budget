@@ -5,6 +5,7 @@ module Budget
 
         def initialize(files, column, year, label_field = 'income_code_name', total_plan_column = 'budget_plan', total_fact_column = 'total_done', bit_depth = 8)
           @files = files.to_a
+          binding.pry
           @column = column
           @year = year
           @bit_depth = bit_depth
@@ -43,15 +44,13 @@ module Budget
           @res[:key] = 'Всього'
           @res[:icon] = '/assets/icons/pig.svg'
           @res[:color] = 'green'
-          binding.pry
           @files.select{|file| file.public_send(@column) =~ level_regex(0)[:regex]}.group_by{|file| file.public_send(@column)}.each do |key, files|
-            binding.pry
             @res[:children] << build_tree(files, 1, key)
           end
           @res
         end
 
-        private 
+        protected 
 
         def build_scelleton
           {
@@ -92,7 +91,7 @@ module Budget
           end
           tmp[:amount][:plan][@year][0] = tmp[:amount][:plan][@year].values.last
           tmp[:amount][:fact][@year][0] = tmp[:amount][:fact][@year].values.last
-          tmp[:amount][:plan][@year]['_cumulative'] = false
+          tmp[:amount][:plan][@year]['_cumulative'] = true
           # tmp[:amount][:fact][@year]['_cumulative'] = true
           tmp
         end
